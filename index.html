@@ -9,150 +9,131 @@
 
   body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
-    font-size: 14px; line-height: 1.6; color: #1a1a1a;
-    background: #f8f7f4; padding: 2rem 1.5rem 4rem;
+    font-size: 14.5px; line-height: 1.7; color: #ddd8f8;
+    background: #07071a;
+    padding: 3rem 2rem 6rem;
+    min-height: 100vh;
   }
 
-  @media (prefers-color-scheme: dark) {
-    body { background: #1a1a18; color: #e8e6e0; }
-    .card, .flag-card, .mode-card, .res-card, .verdict { background: #242422; border-color: #333330; }
-    .card-head { background: #2a2a28; border-color: #333330; }
-    .item { border-color: #2e2e2c; color: #666; }
-    .item:hover { background: #2c2c2a; }
-    .item.checked { background: #2a2a28; }
-    .item.checked .item-text { color: #e8e6e0; }
-    .item.checked .item-note { color: #888; }
-    .result-area { background: #222220; border-color: #333330; }
-    .reset-btn { color: #888; border-color: #333330; }
-    .reset-btn:hover { background: #2c2c2a; }
-    .item-note, .sub, .header p, .footer, .mode-sub { color: #666; }
-    .res-label, .res-max { color: #666; }
-    .header, .footer { border-color: #333330; }
-    .cb { background: #242422; border-color: #555; }
-    .cnt-b { background: #085041; color: #9FE1CB; }
-    .cnt-f { background: #3C3489; color: #CECBF6; }
-    .cnt-r { background: #791F1F; color: #F7C1C1; }
-    .dealbreaker { background: #791F1F; color: #F7C1C1; }
-    .dealbreaker-f { background: #3C3489; color: #CECBF6; }
-    .weighted { background: #3C3489; color: #CECBF6; }
-    .section-intro, .insight { background: #26243a; border-color: #534AB7; }
-    .section-intro strong, .insight strong { color: #e8e6e0; }
-    .mode-card { border-color: #333330; }
-    .mode-icon { background: #2a2a28; }
-    .sec-label { border-color: #333330; color: #555; }
-    .mode-grid { border-color: #333330; }
-    .mode-col { border-color: #333330; }
-    .mode-col:first-child { border-color: #333330; }
+  canvas#starfield {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 0; pointer-events: none;
   }
 
-  .page { max-width: 1060px; margin: 0 auto; }
+  .page { max-width: 1060px; margin: 0 auto; position: relative; z-index: 1; }
 
-  .header { margin-bottom: 1.75rem; padding-bottom: 1.25rem; border-bottom: 1px solid #e0ddd6; }
-  .header h1 { font-size: 22px; font-weight: 500; letter-spacing: -0.01em; }
+  .header { margin-bottom: 2.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid #1e1e45; }
+  .header h1 { font-size: 23px; font-weight: 500; letter-spacing: -0.01em; color: #ece9ff; }
 
   .sec-label {
-    font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase;
-    color: #bbb; margin: 1.75rem 0 0.75rem;
-    padding-bottom: 6px; border-bottom: 1px solid #ebe8e0;
+    font-size: 10.5px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+    color: #4a4880; margin: 2.25rem 0 1rem;
+    padding-bottom: 7px; border-bottom: 1px solid #161630;
   }
 
+  /* MODE CARD */
   .mode-card {
-    background: #fff; border: 1px solid #e8e5de; border-radius: 10px;
-    overflow: hidden; margin-bottom: 16px;
+    background: #0c0c22; border: 1px solid #1e1e45; border-radius: 14px;
+    overflow: hidden; margin-bottom: 20px;
   }
   .mode-card-head {
-    padding: 10px 14px; border-bottom: 1px solid #e8e5de;
-    background: #faf9f7;
+    padding: 13px 18px; border-bottom: 1px solid #1a1a40;
+    background: #0a0a1e;
   }
-  .mode-card-head h3 { font-size: 13.5px; font-weight: 500; }
-  .mode-card-head p { font-size: 11.5px; color: #aaa; margin-top: 1px; }
+  .mode-card-head h3 { font-size: 14px; font-weight: 500; color: #ece9ff; }
+  .mode-card-head p { font-size: 12px; color: #4a4880; margin-top: 2px; }
   .mode-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; }
-  .mode-col { padding: 14px 16px; border-right: 1px solid #f0ede6; }
+  .mode-col { padding: 18px 20px; border-right: 1px solid #131330; }
   .mode-col:last-child { border-right: none; }
   .mode-label {
     font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
   }
-  .mode-label-p { color: #3C3489; }
-  .mode-label-b { color: #0F6E56; }
-  .mode-label-d { color: #633806; }
+  .mode-label-p { color: #9d94f8; }
+  .mode-label-b { color: #00c9a7; }
+  .mode-label-d { color: #c98240; }
   .mode-item {
-    font-size: 12.5px; color: #1a1a1a; line-height: 1.45;
-    padding: 4px 0; border-bottom: 0.5px solid #f5f3ee;
-    display: flex; gap: 7px; align-items: flex-start;
+    font-size: 13px; color: #ccc8f0; line-height: 1.5;
+    padding: 7px 0; border-bottom: 1px solid #111128;
+    display: flex; gap: 9px; align-items: flex-start;
   }
   .mode-item:last-child { border-bottom: none; }
-  .mode-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
-  .md-p { background: #7F77DD; }
-  .md-b { background: #1D9E75; }
-  .md-d { background: #BA7517; }
-  .mode-note { font-size: 11px; color: #aaa; margin-top: 1px; }
+  .mode-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; margin-top: 6px; }
+  .md-p { background: #9d94f8; box-shadow: 0 0 6px #9d94f855; }
+  .md-b { background: #00c9a7; box-shadow: 0 0 6px #00c9a755; }
+  .md-d { background: #c98240; box-shadow: 0 0 6px #c9824055; }
+  .mode-note { font-size: 11.5px; color: #4a4880; margin-top: 3px; line-height: 1.45; }
 
-  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  /* GRID + CARDS */
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
   @media (max-width: 680px) { .grid { grid-template-columns: 1fr; } .mode-grid { grid-template-columns: 1fr; } }
 
-  .card { background: #fff; border: 1px solid #e8e5de; border-radius: 10px; overflow: hidden; margin-bottom: 0; }
-  .flag-card { background: #fff; border: 1px solid #e8e5de; border-top: 2px solid #E24B4A; border-radius: 10px; overflow: hidden; margin-bottom: 16px; }
+  .card { background: #0c0c22; border: 1px solid #1e1e45; border-radius: 14px; overflow: hidden; }
+  .flag-card { background: #0c0c22; border: 1px solid #1e1e45; border-top: 2px solid #e24b4a; border-radius: 14px; overflow: hidden; margin-bottom: 20px; }
   .card-head {
-    padding: 10px 14px; border-bottom: 1px solid #e8e5de; background: #faf9f7;
+    padding: 13px 18px; border-bottom: 1px solid #1a1a40; background: #0a0a1e;
     display: flex; align-items: center; justify-content: space-between;
   }
-  .card-head h3 { font-size: 13.5px; font-weight: 500; }
-  .sub { font-size: 11.5px; color: #aaa; margin-top: 1px; }
+  .card-head h3 { font-size: 14px; font-weight: 500; color: #ece9ff; }
+  .sub { font-size: 12px; color: #4a4880; margin-top: 2px; }
 
-  .counter { font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 20px; min-width: 44px; text-align: center; }
-  .cnt-b { background: #E1F5EE; color: #0F6E56; }
-  .cnt-f { background: #EEEDFE; color: #3C3489; }
-  .cnt-r { background: #FCEBEB; color: #A32D2D; }
+  .counter { font-size: 12px; font-weight: 600; padding: 3px 11px; border-radius: 20px; min-width: 48px; text-align: center; }
+  .cnt-b { background: #051f1a; color: #00c9a7; border: 1px solid #0a3830; }
+  .cnt-f { background: #100e30; color: #9d94f8; border: 1px solid #1e1a50; }
+  .cnt-r { background: #1e0808; color: #f07070; border: 1px solid #3a1010; }
 
   .item {
-    display: flex; align-items: flex-start; gap: 11px;
-    padding: 9px 14px; border-bottom: 1px solid #f0ede6;
-    cursor: pointer; transition: background 0.1s; user-select: none;
+    display: flex; align-items: flex-start; gap: 13px;
+    padding: 11px 18px; border-bottom: 1px solid #111128;
+    cursor: pointer; transition: background 0.15s; user-select: none;
   }
   .item:last-child { border-bottom: none; }
-  .item:hover { background: #fdfcfb; }
+  .item:hover { background: #0f0f28; }
 
   .cb {
-    width: 17px; height: 17px; border-radius: 4px; border: 1.5px solid #ccc;
-    background: #fff; flex-shrink: 0; margin-top: 1px;
-    display: flex; align-items: center; justify-content: center; transition: all 0.12s;
+    width: 18px; height: 18px; border-radius: 5px; border: 1.5px solid #2e2e60;
+    background: #0c0c22; flex-shrink: 0; margin-top: 2px;
+    display: flex; align-items: center; justify-content: center; transition: all 0.15s;
   }
   .cb svg { display: none; }
   .item.checked .cb svg { display: block; }
-  .item.checked .cb-b { background: #1D9E75; border-color: #1D9E75; }
-  .item.checked .cb-f { background: #534AB7; border-color: #534AB7; }
-  .item.checked .cb-r { background: #E24B4A; border-color: #E24B4A; }
+  .item.checked .cb-b { background: #00c9a7; border-color: #00c9a7; box-shadow: 0 0 8px #00c9a755; }
+  .item.checked .cb-f { background: #7c6ff7; border-color: #7c6ff7; box-shadow: 0 0 8px #7c6ff755; }
+  .item.checked .cb-r { background: #e24b4a; border-color: #e24b4a; box-shadow: 0 0 8px #e24b4a55; }
 
-  .item-text { font-size: 13px; color: #888; line-height: 1.45; }
-  .item-note { font-size: 11.5px; color: #aaa; margin-top: 2px; line-height: 1.4; }
+  .item-text { font-size: 13.5px; color: #4a4880; line-height: 1.5; }
+  .item-note { font-size: 12px; color: #32325a; margin-top: 3px; line-height: 1.45; }
 
-  .item.checked .item-text { color: #1a1a1a; font-weight: 500; }
-  .item.checked .item-note { color: #888; }
-  .item.checked { background: #fdfcfb; } font-weight: 600; color: #A32D2D; background: #FCEBEB; padding: 1px 6px; border-radius: 10px; margin-left: 5px; vertical-align: middle; }
-  .dealbreaker-f { font-size: 10px; font-weight: 600; color: #3C3489; background: #EEEDFE; padding: 1px 6px; border-radius: 10px; margin-left: 5px; vertical-align: middle; }
-  .weighted { font-size: 10px; font-weight: 600; color: #3C3489; background: #EEEDFE; padding: 1px 6px; border-radius: 10px; margin-left: 5px; vertical-align: middle; }
+  .item.checked .item-text { color: #ece9ff; font-weight: 500; }
+  .item.checked .item-note { color: #6b6890; }
+  .item.checked { background: #0f0f28; }
 
-  .result-area { background: #f5f4f0; border: 1px solid #e8e5de; border-radius: 10px; padding: 14px 16px; margin-bottom: 16px; }
-  .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
-  .res-card { background: #fff; border: 1px solid #e8e5de; border-radius: 8px; padding: 10px 14px; }
-  .res-label { font-size: 10.5px; color: #aaa; margin-bottom: 4px; letter-spacing: 0.04em; text-transform: uppercase; }
-  .res-val { font-size: 22px; font-weight: 500; }
-  .res-max { font-size: 13px; color: #aaa; font-weight: 400; }
+  .dealbreaker { font-size: 10px; font-weight: 600; color: #f07070; background: #200808; border: 1px solid #3a1010; padding: 1px 7px; border-radius: 10px; margin-left: 6px; vertical-align: middle; }
+  .dealbreaker-f { font-size: 10px; font-weight: 600; color: #9d94f8; background: #100e30; border: 1px solid #1e1a50; padding: 1px 7px; border-radius: 10px; margin-left: 6px; vertical-align: middle; }
+  .weighted { font-size: 10px; font-weight: 600; color: #9d94f8; background: #100e30; border: 1px solid #1e1a50; padding: 1px 7px; border-radius: 10px; margin-left: 6px; vertical-align: middle; }
 
-  .verdict { padding: 11px 14px; border-radius: 8px; font-size: 13px; line-height: 1.55; border: 1px solid #e8e5de; background: #fff; }
-  .verdict-label { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #bbb; margin-bottom: 5px; }
+  /* RESULT */
+  .result-area { background: #09091e; border: 1px solid #1e1e45; border-radius: 14px; padding: 18px 20px; margin-bottom: 20px; }
+  .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+  .res-card { background: #0c0c22; border: 1px solid #1e1e45; border-radius: 10px; padding: 13px 16px; }
+  .res-label { font-size: 10.5px; color: #4a4880; margin-bottom: 5px; letter-spacing: 0.05em; text-transform: uppercase; }
+  .res-val { font-size: 24px; font-weight: 500; color: #ece9ff; }
+  .res-max { font-size: 14px; color: #4a4880; font-weight: 400; }
 
-  .reset-btn { margin-top: 11px; font-size: 12px; color: #aaa; background: none; border: 1px solid #e0ddd6; border-radius: 8px; padding: 6px 12px; cursor: pointer; width: 100%; transition: background 0.1s; }
-  .reset-btn:hover { background: #f0ede6; }
+  .verdict { padding: 14px 18px; border-radius: 10px; font-size: 13.5px; line-height: 1.6; border: 1px solid #1e1e45; background: #0c0c22; }
+  .verdict-label { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #4a4880; margin-bottom: 6px; }
 
-  .insight { background: #f5f4fb; border: 1px solid #e0ddf5; border-left: 3px solid #7F77DD; border-radius: 0 8px 8px 0; padding: 10px 14px; font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 10px; }
-  .insight strong { color: #1a1a1a; font-weight: 500; }
+  .reset-btn { margin-top: 13px; font-size: 12.5px; color: #4a4880; background: none; border: 1px solid #1e1e45; border-radius: 10px; padding: 8px 14px; cursor: pointer; width: 100%; transition: background 0.15s; }
+  .reset-btn:hover { background: #0f0f28; color: #9d94f8; }
 
-  .footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #e8e5de; font-size: 11.5px; color: #bbb; text-align: center; }
+  .insight { background: #0d0c28; border: 1px solid #1e1a50; border-left: 3px solid #7c6ff7; border-radius: 0 10px 10px 0; padding: 12px 16px; font-size: 13px; color: #6b6890; line-height: 1.65; margin-bottom: 12px; }
+  .insight strong { color: #ece9ff; font-weight: 500; }
+
+  .footer { margin-top: 4rem; padding-top: 1.25rem; border-top: 1px solid #161630; font-size: 12px; color: #2e2e55; text-align: center; letter-spacing: 0.04em; }
 </style>
 </head>
 <body>
+<canvas id="starfield"></canvas>
 <div class="page">
 
   <div class="header">
@@ -208,7 +189,6 @@
           <div class="cb cb-b"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <div><div class="item-text">Kein Erklärungsbedarf wenn Kontakt aussetzt</div><div class="item-note">Keine Rechenschaft nötig, aber ein kurzes "Ist alles in Ordnung?" ist beidseitig willkommen. Transparenz und Offenheit schätze ich auch im lockeren Kontakt.</div></div>
         </div>
-
       </div>
     </div>
 
@@ -264,7 +244,7 @@
 
   <div class="flag-card">
     <div class="card-head">
-      <div><h3>Red Flags <span style="font-size:11.5px;font-weight:400;color:#aaa">— gelten für beide Kategorien</span></h3><div class="sub">Wenn das zutrifft, überdenke ich den Aufwand.</div></div>
+      <div><h3>Red Flags <span style="font-size:12px;font-weight:400;color:#4a4880">— gelten für beide Kategorien</span></h3><div class="sub">Wenn das zutrifft, überdenke ich den Aufwand.</div></div>
       <span class="counter cnt-r" id="cnt-r">0 / 8</span>
     </div>
     <div id="items-r">
@@ -306,11 +286,11 @@
   <div class="result-area">
     <div class="result-grid">
       <div class="res-card"><div class="res-label">Bekannte-Score</div><div class="res-val" id="score-b">0 <span class="res-max">/ 3</span></div></div>
-      <div class="res-card"><div class="res-label">Freund:innen-Score</div><div class="res-val" id="score-f">0 <span class="res-max">/ 8</span></div></div>
+      <div class="res-card"><div class="res-label">Freund:innen-Score</div><div class="res-val" id="score-f">0 <span class="res-max">/ 10</span></div></div>
     </div>
     <div class="verdict" id="verdict">
       <div class="verdict-label">Einschätzung</div>
-      <span style="color:#bbb">Noch keine Angaben — Checkliste oben ausfüllen.</span>
+      <span style="color:#32325a">Noch keine Angaben — Checkliste oben ausfüllen.</span>
     </div>
     <button class="reset-btn" onclick="resetAll()">Zurücksetzen</button>
   </div>
@@ -322,11 +302,11 @@
         <div><h3>Zeichen von Offenheit</h3></div>
       </div>
       <div>
-        <div class="item" data-cat="x" data-val="0" onclick="toggle(this)"><div class="cb cb-b" style="border-color:#1D9E75;"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="item-text">Entsteht im Kontakt</div><div class="item-note">Irgendetwas im Gespräch hat den Raum dafür geöffnet. Es kommt nicht aus dem Nichts.</div></div></div>
-        <div class="item" data-cat="x" data-val="0" onclick="toggle(this)"><div class="cb cb-b" style="border-color:#1D9E75;"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="item-text">Dosiert sich</div><div class="item-note">Eskaliert nicht sofort auf maximale Tiefe. Gibt mir die Möglichkeit, mitzugehen oder nicht.</div></div></div>
-        <div class="item" data-cat="x" data-val="0" onclick="toggle(this)"><div class="cb cb-b" style="border-color:#1D9E75;"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="item-text">Spürt, ob ich dabei bin</div><div class="item-note">Die Person nimmt wahr, ob der Moment und ich dafür da sind. Und passt sich an.</div></div></div>
-        <div class="item" data-cat="x" data-val="0" onclick="toggle(this)"><div class="cb cb-b" style="border-color:#1D9E75;"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="item-text">Bleibt Eigentümer:in des Geteilten</div><div class="item-note">Die Verantwortung für das Gesagte bleibt bei der Person. Ich werde nicht zur Auffangstation.</div></div></div>
-        <div class="item" data-cat="x" data-val="0" onclick="toggle(this)"><div class="cb cb-b" style="border-color:#1D9E75;"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="item-text">Lässt Raum für mich</div><div class="item-note">Es entsteht ein Gespräch, kein Monolog. Meine Reaktion ist willkommen, aber nicht gefordert.</div></div></div>
+        <div class="item" data-cat="x" data-val="0" onclick="toggle(this)"><div class="cb cb-b" style="border-color:#0a3830;"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="item-text">Entsteht im Kontakt</div><div class="item-note">Irgendetwas im Gespräch hat den Raum dafür geöffnet. Es kommt nicht aus dem Nichts.</div></div></div>
+        <div class="item" data-cat="x" data-val="0" onclick="toggle(this)"><div class="cb cb-b" style="border-color:#0a3830;"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="item-text">Dosiert sich</div><div class="item-note">Eskaliert nicht sofort auf maximale Tiefe. Gibt mir die Möglichkeit, mitzugehen oder nicht.</div></div></div>
+        <div class="item" data-cat="x" data-val="0" onclick="toggle(this)"><div class="cb cb-b" style="border-color:#0a3830;"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="item-text">Spürt, ob ich dabei bin</div><div class="item-note">Die Person nimmt wahr, ob der Moment und ich dafür da sind. Und passt sich an.</div></div></div>
+        <div class="item" data-cat="x" data-val="0" onclick="toggle(this)"><div class="cb cb-b" style="border-color:#0a3830;"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="item-text">Bleibt Eigentümer:in des Geteilten</div><div class="item-note">Die Verantwortung für das Gesagte bleibt bei der Person. Ich werde nicht zur Auffangstation.</div></div></div>
+        <div class="item" data-cat="x" data-val="0" onclick="toggle(this)"><div class="cb cb-b" style="border-color:#0a3830;"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="item-text">Lässt Raum für mich</div><div class="item-note">Es entsteht ein Gespräch, kein Monolog. Meine Reaktion ist willkommen, aber nicht gefordert.</div></div></div>
       </div>
     </div>
     <div class="card">
@@ -334,11 +314,11 @@
         <div><h3>Zeichen von Abladen</h3></div>
       </div>
       <div>
-        <div class="item" data-cat="x" data-val="0" onclick="toggle(this)"><div class="cb cb-r" style="border-color:#E24B4A;"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="item-text">Kommt ohne Einladung</div><div class="item-note">Kein Aufbau, kein Kontextcheck. Ich werde ohne Vorwarnung in etwas hineingezogen.</div></div></div>
-        <div class="item" data-cat="x" data-val="0" onclick="toggle(this)"><div class="cb cb-r" style="border-color:#E24B4A;"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="item-text">Eskaliert sofort</div><div class="item-note">Von null auf maximale emotionale Tiefe ohne Zwischenstufe. Kein Raum zum Ankommen.</div></div></div>
-        <div class="item" data-cat="x" data-val="0" onclick="toggle(this)"><div class="cb cb-r" style="border-color:#E24B4A;"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="item-text">Ignoriert, ob ich da bin</div><div class="item-note">Mein Zustand, meine Kapazität, der Moment — spielen keine Rolle.</div></div></div>
-        <div class="item" data-cat="x" data-val="0" onclick="toggle(this)"><div class="cb cb-r" style="border-color:#E24B4A;"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="item-text">Überträgt Verantwortung</div><div class="item-note">Das Geteilte landet bei mir. Ich fühle mich verantwortlich, ohne dass ich das gewählt hätte.</div></div></div>
-        <div class="item" data-cat="x" data-val="0" onclick="toggle(this)"><div class="cb cb-r" style="border-color:#E24B4A;"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="item-text">Hinterlässt ein Gewicht</div><div class="item-note">Nach dem Gespräch trage ich etwas, das mir nicht gehört.</div></div></div>
+        <div class="item" data-cat="x" data-val="0" onclick="toggle(this)"><div class="cb cb-r" style="border-color:#3a1010;"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="item-text">Kommt ohne Einladung</div><div class="item-note">Kein Aufbau, kein Kontextcheck. Ich werde ohne Vorwarnung in etwas hineingezogen.</div></div></div>
+        <div class="item" data-cat="x" data-val="0" onclick="toggle(this)"><div class="cb cb-r" style="border-color:#3a1010;"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="item-text">Eskaliert sofort</div><div class="item-note">Von null auf maximale emotionale Tiefe ohne Zwischenstufe. Kein Raum zum Ankommen.</div></div></div>
+        <div class="item" data-cat="x" data-val="0" onclick="toggle(this)"><div class="cb cb-r" style="border-color:#3a1010;"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="item-text">Ignoriert, ob ich da bin</div><div class="item-note">Mein Zustand, meine Kapazität, der Moment — spielen keine Rolle.</div></div></div>
+        <div class="item" data-cat="x" data-val="0" onclick="toggle(this)"><div class="cb cb-r" style="border-color:#3a1010;"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="item-text">Überträgt Verantwortung</div><div class="item-note">Das Geteilte landet bei mir. Ich fühle mich verantwortlich, ohne dass ich das gewählt hätte.</div></div></div>
+        <div class="item" data-cat="x" data-val="0" onclick="toggle(this)"><div class="cb cb-r" style="border-color:#3a1010;"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="item-text">Hinterlässt ein Gewicht</div><div class="item-note">Nach dem Gespräch trage ich etwas, das mir nicht gehört.</div></div></div>
       </div>
     </div>
   </div>
@@ -347,6 +327,41 @@
 
 </div>
 <script>
+  // Starfield
+  (function() {
+    var c = document.getElementById('starfield');
+    var ctx = c.getContext('2d');
+    function resize() { c.width = window.innerWidth; c.height = window.innerHeight; draw(); }
+    function draw() {
+      ctx.clearRect(0, 0, c.width, c.height);
+      var rng = mulberry32(42);
+      for (var i = 0; i < 260; i++) {
+        var x = rng() * c.width, y = rng() * c.height;
+        var r = rng() * 1.1 + 0.2;
+        var a = rng() * 0.55 + 0.1;
+        ctx.beginPath();
+        ctx.arc(x, y, r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(200,196,255,' + a.toFixed(2) + ')';
+        ctx.fill();
+      }
+      // a few slightly brighter stars
+      var rng2 = mulberry32(99);
+      for (var j = 0; j < 18; j++) {
+        var x2 = rng2() * c.width, y2 = rng2() * c.height;
+        ctx.beginPath();
+        ctx.arc(x2, y2, 1.4, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(230,225,255,0.7)';
+        ctx.fill();
+      }
+    }
+    function mulberry32(a) {
+      return function() { a |= 0; a = a + 0x6D2B79F5 | 0; var t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+    }
+    window.addEventListener('resize', resize);
+    resize();
+  })();
+
+  // Checklist logic
   var scores = { b: 0, f: 0, r: 0, x: 0 };
   var counts = { b: 0, f: 0, r: 0, x: 0 };
 
@@ -364,38 +379,36 @@
     document.getElementById('score-b').innerHTML = scores.b + ' <span class="res-max">/ 3</span>';
     document.getElementById('score-f').innerHTML = scores.f + ' <span class="res-max">/ 10</span>';
 
-    var rf = scores.r, db = document.querySelectorAll('#items-r .item.checked .dealbreaker').length;
+    var db = document.querySelectorAll('#items-r .item.checked .dealbreaker').length;
     var dbf = document.querySelectorAll('#items-r .item.checked .dealbreaker-f').length;
     var nonDb = document.querySelectorAll('#items-r .item.checked').length - db - dbf;
     var b = scores.b, f = scores.f, v = document.getElementById('verdict');
     var combined = b + f;
-    var txt = '', col = '#1a1a1a';
+    var txt = '', col = '#ddd8f8';
     var rfNote = nonDb === 1 ? ' (Eine Red Flag ist aktiv, ansprechbar, kein Ausschluss.)' : '';
 
     if (db >= 1) {
-      txt = 'Dealbreaker aktiv. Kein Aufwand, unabhängig davon, wie viel sonst stimmt.'; col = '#A32D2D';
+      txt = 'Dealbreaker aktiv. Kein Aufwand, unabhängig davon, wie viel sonst stimmt.'; col = '#f07070';
     } else if (nonDb >= 3) {
-      txt = 'Drei oder mehr Red Flags: das entspricht in der Summe einem Dealbreaker. Aufwand ist hier nicht sinnvoll.'; col = '#A32D2D';
+      txt = 'Drei oder mehr Red Flags: das entspricht in der Summe einem Dealbreaker. Aufwand ist hier nicht sinnvoll.'; col = '#f07070';
     } else if (nonDb === 2) {
-      txt = 'Zwei Red Flags: kritisch. Ich beobachte genau, ob sich das ändert, und setze eine klare Grenze.'; col = '#854F0B';
+      txt = 'Zwei Red Flags: kritisch. Ich beobachte genau, ob sich das ändert, und setze eine klare Grenze.'; col = '#c98240';
     } else if (combined < 4) {
-      if (b === 3) { txt = 'Bekannte-Seite vollständig bewertet — sehr gutes Bild. Freundschaftspotenzial noch nicht einschätzbar, mehr gemeinsame Situationen schaffen.' + rfNote; col = '#0F6E56'; }
-      else { txt = 'Zu wenig Daten oder zu wenig Potenzial. Mehr Situationen beobachten, oder akzeptieren, dass hier nichts zu holen ist.' + rfNote; col = '#888'; }
+      if (b === 3) { txt = 'Bekannte-Seite vollständig bewertet — sehr gutes Bild. Freundschaftspotenzial noch nicht einschätzbar, mehr gemeinsame Situationen schaffen.' + rfNote; col = '#00c9a7'; }
+      else { txt = 'Zu wenig Daten oder zu wenig Potenzial. Mehr Situationen beobachten, oder akzeptieren, dass hier nichts zu holen ist.' + rfNote; col = '#4a4880'; }
     } else if (combined >= 10) {
-      // b max ist 3, daher ist f hier immer >= 7
-      if (f >= 8) { txt = 'Super, auf beiden Ebenen. Freundschaftspotenzial ist klar, auch als Bekannte sehr gut. Investition lohnt sich sehr.' + rfNote; col = '#3C3489'; }
-      else { txt = 'Starkes Gesamtbild. Sehr interessantes Freundschaftspotenzial, solide Basis als Bekannte.' + rfNote; col = '#3C3489'; }
+      if (f >= 8) { txt = 'Super, auf beiden Ebenen. Freundschaftspotenzial ist klar, auch als Bekannte sehr gut. Investition lohnt sich sehr.' + rfNote; col = '#9d94f8'; }
+      else { txt = 'Starkes Gesamtbild. Sehr interessantes Freundschaftspotenzial, solide Basis als Bekannte.' + rfNote; col = '#9d94f8'; }
     } else if (combined >= 7) {
-      if (f >= 7) { txt = 'Gutes Gesamtbild. Klares Freundschaftspotenzial, lohnt sich weiter zu investieren.' + rfNote; col = '#534AB7'; }
-      else if (f >= 4) { txt = 'Gutes Gesamtbild. Freundschaftspotenzial ist vorhanden, noch mehr Situationen beobachten.' + rfNote; col = '#534AB7'; }
-      else if (b === 3) { txt = 'Sehr gute Bekannte. Als Freund:in noch zu wenig Daten. Mehr Zeit miteinander.' + rfNote; col = '#0F6E56'; }
-      else { txt = 'Gutes Gesamtbild, noch kein klares Profil. Weiter beobachten.' + rfNote; col = '#888'; }
+      if (f >= 7) { txt = 'Gutes Gesamtbild. Klares Freundschaftspotenzial, lohnt sich weiter zu investieren.' + rfNote; col = '#9d94f8'; }
+      else if (f >= 4) { txt = 'Gutes Gesamtbild. Freundschaftspotenzial ist vorhanden, noch mehr Situationen beobachten.' + rfNote; col = '#9d94f8'; }
+      else if (b === 3) { txt = 'Sehr gute Bekannte. Als Freund:in noch zu wenig Daten. Mehr Zeit miteinander.' + rfNote; col = '#00c9a7'; }
+      else { txt = 'Gutes Gesamtbild, noch kein klares Profil. Weiter beobachten.' + rfNote; col = '#4a4880'; }
     } else {
-      // combined 4–6
-      if (f >= 4) { txt = 'Interessant, auf beiden Ebenen. Lohnt sich, mehr Daten zu sammeln.' + rfNote; col = '#534AB7'; }
-      else if (b === 3) { txt = 'Gute Bekannte. Freundschaftspotenzial noch zu wenig beobachtet — mehr gemeinsame Situationen schaffen.' + rfNote; col = '#0F6E56'; }
-      else if (b >= 2) { txt = 'Interessante Bekannte. Noch zu wenig Daten für mehr. Weiter beobachten.' + rfNote; col = '#0F6E56'; }
-      else { txt = 'Gerade so interessant. Mehr Daten sammeln bevor ich investiere.' + rfNote; col = '#888'; }
+      if (f >= 4) { txt = 'Interessant, auf beiden Ebenen. Lohnt sich, mehr Daten zu sammeln.' + rfNote; col = '#9d94f8'; }
+      else if (b === 3) { txt = 'Gute Bekannte. Freundschaftspotenzial noch zu wenig beobachtet — mehr gemeinsame Situationen schaffen.' + rfNote; col = '#00c9a7'; }
+      else if (b >= 2) { txt = 'Interessante Bekannte. Noch zu wenig Daten für mehr. Weiter beobachten.' + rfNote; col = '#00c9a7'; }
+      else { txt = 'Gerade so interessant. Mehr Daten sammeln bevor ich investiere.' + rfNote; col = '#4a4880'; }
     }
 
     v.innerHTML = '<div class="verdict-label">Einschätzung</div><span style="color:' + col + '">' + txt + '</span>';
