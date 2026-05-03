@@ -77,10 +77,10 @@
   .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
   @media (max-width: 680px) { .grid { grid-template-columns: 1fr; } .mode-grid { grid-template-columns: 1fr; } }
 
-  .card { background: rgba(20, 14, 34, 0.85); border: 1px solid #211630; border-radius: 14px; overflow: hidden; backdrop-filter: blur(4px); }
-  .card-b { background: rgba(10, 12, 42, 0.87); border-top: 2px solid #6888f045; }
-  .card-f { background: rgba(32, 12, 36, 0.87); border-top: 2px solid #d4a0c845; }
-  .flag-card { background: rgba(18, 9, 13, 0.87); border: 1px solid #211630; border-top: 2px solid #904040; border-radius: 14px; overflow: hidden; margin-bottom: 20px; backdrop-filter: blur(4px); }
+  .card { background: rgba(18, 13, 30, 0.92); border: 1px solid #1e1530; border-radius: 14px; overflow: hidden; backdrop-filter: blur(6px); }
+  .card-b { background: rgba(10, 11, 36, 0.92); border-top: 2px solid #6888f030; }
+  .card-f { background: rgba(28, 11, 32, 0.92); border-top: 2px solid #d4a0c830; }
+  .flag-card { background: rgba(16, 9, 12, 0.92); border: 1px solid #1e1530; border-top: 2px solid #804040; border-radius: 14px; overflow: hidden; margin-bottom: 20px; backdrop-filter: blur(6px); }
   .card-head {
     padding: 13px 18px; border-bottom: 1px solid #1c1228;
     background: rgba(10, 7, 20, 0.55);
@@ -387,13 +387,13 @@
       ctx.clearRect(0, 0, c.width, c.height);
       var W = c.width, H = c.height;
 
-      // === NEBULA LAYER — soft background glow ===
-      neb(W*0.08, H*0.18, W*0.40, H*0.34, -0.3,  'rgba(45,25,200,0.12)',  'rgba(25,12,150,0.04)'); // indigo top-left
-      neb(W*0.46, H*0.50, W*0.44, H*0.40,  0.5,  'rgba(110,20,210,0.10)', 'rgba(70,15,170,0.04)'); // violet centre
-      neb(W*0.88, H*0.62, W*0.38, H*0.46,  0.8,  'rgba(215,35,145,0.11)', 'rgba(160,25,100,0.04)'); // hot pink right
-      neb(W*0.18, H*0.80, W*0.42, H*0.32, -0.6,  'rgba(35,75,230,0.10)',  'rgba(20,50,180,0.03)'); // blue bottom-left
-      neb(W*0.76, H*0.22, W*0.46, H*0.40,  0.2,  'rgba(190,55,175,0.10)', 'rgba(140,35,130,0.04)'); // rose around galaxy
-      neb(W*0.60, H*0.08, W*0.22, H*0.20,  0.1,  'rgba(70,110,255,0.11)', 'rgba(45,75,210,0.04)'); // blue accent top
+      // === NEBULA LAYER — very subtle background tint ===
+      neb(W*0.08, H*0.18, W*0.40, H*0.34, -0.3,  'rgba(45,25,200,0.06)',  'rgba(25,12,150,0.02)');
+      neb(W*0.46, H*0.50, W*0.44, H*0.40,  0.5,  'rgba(110,20,210,0.05)', 'rgba(70,15,170,0.02)');
+      neb(W*0.88, H*0.62, W*0.38, H*0.46,  0.8,  'rgba(215,35,145,0.06)', 'rgba(160,25,100,0.02)');
+      neb(W*0.18, H*0.80, W*0.42, H*0.32, -0.6,  'rgba(35,75,230,0.05)',  'rgba(20,50,180,0.02)');
+      neb(W*0.76, H*0.22, W*0.46, H*0.40,  0.2,  'rgba(190,55,175,0.05)', 'rgba(140,35,130,0.02)');
+      neb(W*0.60, H*0.08, W*0.22, H*0.20,  0.1,  'rgba(70,110,255,0.06)', 'rgba(45,75,210,0.02)');
 
       // === GALAXY SPIRAL ===
       var cx = W * 0.76, cy = H * 0.26;
@@ -402,9 +402,9 @@
 
       // Glowing core
       var core = ctx.createRadialGradient(cx, cy, 0, cx, cy, scale * 0.13);
-      core.addColorStop(0,   'rgba(255,248,215,0.60)');
-      core.addColorStop(0.3, 'rgba(255,210,160,0.28)');
-      core.addColorStop(0.7, 'rgba(200,120,180,0.09)');
+      core.addColorStop(0,   'rgba(255,248,215,0.35)');
+      core.addColorStop(0.3, 'rgba(255,210,160,0.14)');
+      core.addColorStop(0.7, 'rgba(200,120,180,0.04)');
       core.addColorStop(1,   'rgba(120,40,120,0)');
       ctx.fillStyle = core;
       ctx.beginPath();
@@ -413,8 +413,8 @@
 
       // Wide haze
       var haze = ctx.createRadialGradient(cx, cy, 0, cx, cy, scale * 0.68);
-      haze.addColorStop(0,   'rgba(200,100,200,0.14)');
-      haze.addColorStop(0.5, 'rgba(120,50,200,0.07)');
+      haze.addColorStop(0,   'rgba(200,100,200,0.06)');
+      haze.addColorStop(0.5, 'rgba(120,50,200,0.03)');
       haze.addColorStop(1,   'rgba(60,20,140,0)');
       ctx.fillStyle = haze;
       ctx.beginPath();
@@ -437,7 +437,7 @@
           var sa = rG() * Math.PI * 2;
           var px = (rv + sc * Math.cos(sa)) * Math.cos(th);
           var py = (rv + sc * Math.sin(sa)) * Math.sin(th);
-          var al = (1 - t) * 0.50 * (0.4 + rG() * 0.6);
+          var al = (1 - t) * 0.32 * (0.4 + rG() * 0.6);
           var sr = rG() * 1.5 + 0.35;
           // gold → rose → violet
           var rr = Math.round(255 - t * 90);
