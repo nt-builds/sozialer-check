@@ -453,7 +453,7 @@
 
       // --- STARS — warm like distant suns ---
       var rS = rng(42);
-      for (var i = 0; i < 350; i++) {
+      for (var i = 0; i < 90; i++) {
         var sx = rS() * W, sy = rS() * H;
         var sr2 = rS() * 1.2 + 0.2;
         var sa2 = rS() * 0.65 + 0.18;
@@ -467,7 +467,7 @@
       }
       // A few bright ones — warm white-gold
       var rB = rng(99);
-      for (var j = 0; j < 22; j++) {
+      for (var j = 0; j < 8; j++) {
         var bx = rB() * W, by = rB() * H;
         ctx.beginPath();
         ctx.arc(bx, by, 1.6, 0, Math.PI * 2);
