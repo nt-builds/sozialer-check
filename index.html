@@ -337,79 +337,99 @@
   // Starfield + Galaxy
   (function() {
     var c = document.getElementById('starfield');
+    if (!c) return;
     var ctx = c.getContext('2d');
+    if (!ctx) return;
 
-    function mulberry32(a) {
-      return function() { a |= 0; a = a + 0x6D2B79F5 | 0; var t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+    // Simple seedable RNG (no Math.imul dependency)
+    function rng(seed) {
+      var s = seed;
+      return function() {
+        s = (s ^ (s << 13)) & 0x7fffffff;
+        s = (s ^ (s >> 17)) & 0x7fffffff;
+        s = (s ^ (s << 5))  & 0x7fffffff;
+        return s / 0x7fffffff;
+      };
     }
 
     function resize() { c.width = window.innerWidth; c.height = window.innerHeight; draw(); }
 
     function draw() {
       ctx.clearRect(0, 0, c.width, c.height);
+      var W = c.width, H = c.height;
 
-      // Galaxy spiral — positioned top-right quadrant, subtle
-      var cx = c.width * 0.78, cy = c.height * 0.28;
-      var scale = Math.min(c.width, c.height) * 0.38;
-      var rngG = mulberry32(1337);
+      // --- GALAXY SPIRAL ---
+      var cx = W * 0.76, cy = H * 0.26;
+      var scale = Math.min(W, H) * 0.36;
+      var rG = rng(1337);
 
-      // Soft glowing core
-      var core = ctx.createRadialGradient(cx, cy, 0, cx, cy, scale * 0.12);
-      core.addColorStop(0,   'rgba(210, 190, 255, 0.22)');
-      core.addColorStop(0.5, 'rgba(150, 120, 240, 0.07)');
-      core.addColorStop(1,   'rgba(100, 80, 200, 0)');
+      // Glowing core
+      var core = ctx.createRadialGradient(cx, cy, 0, cx, cy, scale * 0.14);
+      core.addColorStop(0,   'rgba(220,200,255,0.45)');
+      core.addColorStop(0.4, 'rgba(160,130,255,0.15)');
+      core.addColorStop(1,   'rgba(100,80,220,0)');
       ctx.fillStyle = core;
       ctx.beginPath();
-      ctx.arc(cx, cy, scale * 0.12, 0, Math.PI * 2);
+      ctx.arc(cx, cy, scale * 0.14, 0, Math.PI * 2);
       ctx.fill();
 
-      // Two spiral arms (logarithmic spiral, flattened for perspective)
+      // Outer haze
+      var haze = ctx.createRadialGradient(cx, cy, 0, cx, cy, scale * 0.55);
+      haze.addColorStop(0,   'rgba(140,110,255,0.06)');
+      haze.addColorStop(1,   'rgba(80,60,200,0)');
+      ctx.fillStyle = haze;
+      ctx.beginPath();
+      ctx.arc(cx, cy, scale * 0.55, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Spiral arms — drawn with canvas transform for perspective flatten
       ctx.save();
       ctx.translate(cx, cy);
-      ctx.scale(1, 0.45); // flatten: looks like a galaxy seen at an angle
-      ctx.rotate(0.3);
+      ctx.scale(1, 0.42);
+      ctx.rotate(0.4);
 
       for (var arm = 0; arm < 2; arm++) {
-        var armOff = arm * Math.PI;
-        for (var i = 0; i < 700; i++) {
-          var t = i / 700;
-          var theta = t * Math.PI * 3.5 + armOff;
-          var r = Math.pow(t, 0.7) * scale * 0.48;
-          // scatter widens toward outer arms
-          var scatter = (rngG() - 0.5) * r * 0.28;
-          var sa = rngG() * Math.PI * 2;
-          var px = (r + scatter * Math.cos(sa)) * Math.cos(theta);
-          var py = (r + scatter * Math.sin(sa)) * Math.sin(theta);
-          var alpha = (1 - t) * 0.28 * (0.4 + rngG() * 0.6);
-          var sr = rngG() * 1.0 + 0.25;
+        var aOff = arm * Math.PI;
+        for (var n = 1; n < 800; n++) {
+          var t  = n / 800;
+          var th = t * Math.PI * 3.8 + aOff;
+          var rv = Math.pow(t, 0.65) * scale * 0.50;
+          var sc = (rG() - 0.5) * rv * 0.30;
+          var sa = rG() * Math.PI * 2;
+          var px = (rv + sc * Math.cos(sa)) * Math.cos(th);
+          var py = (rv + sc * Math.sin(sa)) * Math.sin(th);
+          var al = (1 - t) * 0.55 * (0.35 + rG() * 0.65);
+          var sr = rG() * 1.2 + 0.3;
+          // colour: warm white near core → blue-violet at edges
+          var rr = Math.round(200 - t * 80);
+          var gg = Math.round(185 - t * 80);
+          var bb = 255;
           ctx.beginPath();
           ctx.arc(px, py, sr, 0, Math.PI * 2);
-          // arm colour shifts from warm-white core to blue-purple edges
-          var h = Math.round(240 + t * 40);
-          ctx.fillStyle = 'hsla(' + h + ',60%,80%,' + alpha.toFixed(3) + ')';
+          ctx.fillStyle = 'rgba(' + rr + ',' + gg + ',' + bb + ',' + al.toFixed(3) + ')';
           ctx.fill();
         }
       }
       ctx.restore();
 
-      // Background stars
-      var rng = mulberry32(42);
-      for (var i = 0; i < 260; i++) {
-        var x = rng() * c.width, y = rng() * c.height;
-        var r2 = rng() * 1.1 + 0.2;
-        var a = rng() * 0.55 + 0.1;
+      // --- STARS ---
+      var rS = rng(42);
+      for (var i = 0; i < 350; i++) {
+        var sx = rS() * W, sy = rS() * H;
+        var sr2 = rS() * 1.2 + 0.2;
+        var sa2 = rS() * 0.65 + 0.15;
         ctx.beginPath();
-        ctx.arc(x, y, r2, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(200,196,255,' + a.toFixed(2) + ')';
+        ctx.arc(sx, sy, sr2, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(210,205,255,' + sa2.toFixed(2) + ')';
         ctx.fill();
       }
-      // A few brighter stars
-      var rng2 = mulberry32(99);
-      for (var j = 0; j < 18; j++) {
-        var x2 = rng2() * c.width, y2 = rng2() * c.height;
+      // A few bright ones
+      var rB = rng(99);
+      for (var j = 0; j < 22; j++) {
+        var bx = rB() * W, by = rB() * H;
         ctx.beginPath();
-        ctx.arc(x2, y2, 1.4, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(230,225,255,0.7)';
+        ctx.arc(bx, by, 1.6, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(240,235,255,0.85)';
         ctx.fill();
       }
     }
