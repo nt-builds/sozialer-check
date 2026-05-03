@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkliste: Sozialer Aufwand</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 14px; line-height: 1.6; color: #1a1a1a;
+    background: #f8f7f4; padding: 2rem 1.5rem 4rem;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    body { background: #1a1a18; color: #e8e6e0; }
+    .card, .flag-card, .mode-card, .res-card, .verdict { background: #242422; border-color: #333330; }
+    .card-head { background: #2a2a28; border-color: #333330; }
+    .item { border-color: #2e2e2c; color: #666; }
+    .item:hover { background: #2c2c2a; }
+    .item.checked { background: #2a2a28; }
+    .item.checked .item-text { color: #e8e6e0; }
+    .item.checked .item-note { color: #888; }
+    .result-area { background: #222220; border-color: #333330; }
+    .reset-btn { color: #888; border-color: #333330; }
+    .reset-btn:hover { background: #2c2c2a; }
+    .item-note, .sub, .header p, .footer, .mode-sub { color: #666; }
+    .res-label, .res-max { color: #666; }
+    .header, .footer { border-color: #333330; }
+    .cb { background: #242422; border-color: #555; }
+    .cnt-b { background: #085041; color: #9FE1CB; }
+    .cnt-f { background: #3C3489; color: #CECBF6; }
+    .cnt-r { background: #791F1F; color: #F7C1C1; }
+    .dealbreaker { background: #791F1F; color: #F7C1C1; }
+    .dealbreaker-f { background: #3C3489; color: #CECBF6; }
+    .weighted { background: #3C3489; color: #CECBF6; }
+    .section-intro, .insight { background: #26243a; border-color: #534AB7; }
+    .section-intro strong, .insight strong { color: #e8e6e0; }
+    .mode-card { border-color: #333330; }
+    .mode-icon { background: #2a2a28; }
+    .sec-label { border-color: #333330; color: #555; }
+    .mode-grid { border-color: #333330; }
+    .mode-col { border-color: #333330; }
+    .mode-col:first-child { border-color: #333330; }
+  }
+
+  .page { max-width: 1060px; margin: 0 auto; }
+
+  .header { margin-bottom: 1.75rem; padding-bottom: 1.25rem; border-bottom: 1px solid #e0ddd6; }
+  .header h1 { font-size: 22px; font-weight: 500; letter-spacing: -0.01em; }
+
+  .sec-label {
+    font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase;
+    color: #bbb; margin: 1.75rem 0 0.75rem;
+    padding-bottom: 6px; border-bottom: 1px solid #ebe8e0;
+  }
+
+  .mode-card {
+    background: #fff; border: 1px solid #e8e5de; border-radius: 10px;
+    overflow: hidden; margin-bottom: 16px;
+  }
+  .mode-card-head {
+    padding: 10px 14px; border-bottom: 1px solid #e8e5de;
+    background: #faf9f7;
+  }
+  .mode-card-head h3 { font-size: 13.5px; font-weight: 500; }
+  .mode-card-head p { font-size: 11.5px; color: #aaa; margin-top: 1px; }
+  .mode-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; }
+  .mode-col { padding: 14px 16px; border-right: 1px solid #f0ede6; }
+  .mode-col:last-child { border-right: none; }
+  .mode-label {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .mode-label-p { color: #3C3489; }
+  .mode-label-b { color: #0F6E56; }
+  .mode-label-d { color: #633806; }
+  .mode-item {
+    font-size: 12.5px; color: #1a1a1a; line-height: 1.45;
+    padding: 4px 0; border-bottom: 0.5px solid #f5f3ee;
+    display: flex; gap: 7px; align-items: flex-start;
+  }
+  .mode-item:last-child { border-bottom: none; }
+  .mode-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+  .md-p { background: #7F77DD; }
+  .md-b { background: #1D9E75; }
+  .md-d { background: #BA7517; }
+  .mode-note { font-size: 11px; color: #aaa; margin-top: 1px; }
+
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  @media (max-width: 680px) { .grid { grid-template-columns: 1fr; } .mode-grid { grid-template-columns: 1fr; } }
+
+  .card { background: #fff; border: 1px solid #e8e5de; border-radius: 10px; overflow: hidden; margin-bottom: 0; }
+  .flag-card { background: #fff; border: 1px solid #e8e5de; border-top: 2px solid #E24B4A; border-radius: 10px; overflow: hidden; margin-bottom: 16px; }
+  .card-head {
+    padding: 10px 14px; border-bottom: 1px solid #e8e5de; background: #faf9f7;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .card-head h3 { font-size: 13.5px; font-weight: 500; }
+  .sub { font-size: 11.5px; color: #aaa; margin-top: 1px; }
+
+  .counter { font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 20px; min-width: 44px; text-align: center; }
+  .cnt-b { background: #E1F5EE; color: #0F6E56; }
+  .cnt-f { background: #EEEDFE; color: #3C3489; }
+  .cnt-r { background: #FCEBEB; color: #A32D2D; }
+
+  .item {
+    display: flex; align-items: flex-start; gap: 11px;
+    padding: 9px 14px; border-bottom: 1px solid #f0ede6;
+    cursor: pointer; transition: background 0.1s; user-select: none;
+  }
+  .item:last-child { border-bottom: none; }
+  .item:hover { background: #fdfcfb; }
+
+  .cb {
+    width: 17px; height: 17px; border-radius: 4px; border: 1.5px solid #ccc;
+    background: #fff; flex-shrink: 0; margin-top: 1px;
+    display: flex; align-items: center; justify-content: center; transition: all 0.12s;
+  }
+  .cb svg { display: none; }
+  .item.checked .cb svg { display: block; }
+  .item.checked .cb-b { background: #1D9E75; border-color: #1D9E75; }
+  .item.checked .cb-f { background: #534AB7; border-color: #534AB7; }
+  .item.checked .cb-r { background: #E24B4A; border-color: #E24B4A; }
+
+  .item-text { font-size: 13px; color: #888; line-height: 1.45; }
+  .item-note { font-size: 11.5px; color: #aaa; margin-top: 2px; line-height: 1.4; }
+
+  .item.checked .item-text { color: #1a1a1a; font-weight: 500; }
+  .item.checked .item-note { color: #888; }
+  .item.checked { background: #fdfcfb; } font-weight: 600; color: #A32D2D; background: #FCEBEB; padding: 1px 6px; border-radius: 10px; margin-left: 5px; vertical-align: middle; }
+  .dealbreaker-f { font-size: 10px; font-weight: 600; color: #3C3489; background: #EEEDFE; padding: 1px 6px; border-radius: 10px; margin-left: 5px; vertical-align: middle; }
+  .weighted { font-size: 10px; font-weight: 600; color: #3C3489; background: #EEEDFE; padding: 1px 6px; border-radius: 10px; margin-left: 5px; vertical-align: middle; }
+
+  .result-area { background: #f5f4f0; border: 1px solid #e8e5de; border-radius: 10px; padding: 14px 16px; margin-bottom: 16px; }
+  .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .res-card { background: #fff; border: 1px solid #e8e5de; border-radius: 8px; padding: 10px 14px; }
+  .res-label { font-size: 10.5px; color: #aaa; margin-bottom: 4px; letter-spacing: 0.04em; text-transform: uppercase; }
+  .res-val { font-size: 22px; font-weight: 500; }
+  .res-max { font-size: 13px; color: #aaa; font-weight: 400; }
+
+  .verdict { padding: 11px 14px; border-radius: 8px; font-size: 13px; line-height: 1.55; border: 1px solid #e8e5de; background: #fff; }
+  .verdict-label { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #bbb; margin-bottom: 5px; }
+
+  .reset-btn { margin-top: 11px; font-size: 12px; color: #aaa; background: none; border: 1px solid #e0ddd6; border-radius: 8px; padding: 6px 12px; cursor: pointer; width: 100%; transition: background 0.1s; }
+  .reset-btn:hover { background: #f0ede6; }
+
+  .insight { background: #f5f4fb; border: 1px solid #e0ddf5; border-left: 3px solid #7F77DD; border-radius: 0 8px 8px 0; padding: 10px 14px; font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 10px; }
+  .insight strong { color: #1a1a1a; font-weight: 500; }
+
+  .footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #e8e5de; font-size: 11.5px; color: #bbb; text-align: center; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <h1>Checkliste: Lohnt sich sozialer Aufwand?</h1>
+  </div>
+
+  <!-- KONTAKTMODUS -->
+  <div class="sec-label">Kontaktmodus-Kompass: was ich wann brauche</div>
+  <div class="mode-card">
+    <div class="mode-card-head">
+      <h3>Wie ich Kontakt am liebsten gestalte</h3>
+    </div>
+    <div class="mode-grid">
+      <div class="mode-col">
+        <div class="mode-label mode-label-p">Persönlich: was funktioniert</div>
+        <div class="mode-item"><div class="mode-dot md-p"></div><div><div>Anlassbezogene Treffen</div><div class="mode-note">Bspw. Kino, Minigolf, was auch immer. Der Rahmen trägt das Gespräch, nicht umgekehrt. Der Anlass darf auch sein: Ich habe ein Problem, können wir reden?</div></div></div>
+        <div class="mode-item"><div class="mode-dot md-p"></div><div><div>Interessenbasierte Treffen</div><div class="mode-note">Bspw. Bouldern, Magic, Brettspiele, Gassi. Reden oder tun, je nach Thema.</div></div></div>
+        <div class="mode-item"><div class="mode-dot md-p"></div><div><div>Coexistieren</div><div class="mode-note">Im selben Raum sein und jede:r macht eine eigene Sache.</div></div></div>
+      </div>
+      <div class="mode-col">
+        <div class="mode-label mode-label-b">Digital: oft 50 bis 99 % meines Kontakts</div>
+        <div class="mode-item"><div class="mode-dot md-b"></div><div><div>Gespräche schriftlich oder per Sprachnachricht</div><div class="mode-note">Oft präziser als live.</div></div></div>
+        <div class="mode-item"><div class="mode-dot md-b"></div><div><div>"Ich bin da"-Signale auch per Nachricht</div><div class="mode-note">Präsenz muss nicht physisch sein, um sich real anzufühlen.</div></div></div>
+        <div class="mode-item"><div class="mode-dot md-b"></div><div><div>Kein vollständiger Ersatz für persönlichen Kontakt</div><div class="mode-note">Digital trägt viel, aber je nach Person brauche ich auch unterschiedlich viel persönlichen Kontakt.</div></div></div>
+      </div>
+      <div class="mode-col">
+        <div class="mode-label mode-label-d">Was nicht funktioniert</div>
+        <div class="mode-item"><div class="mode-dot md-d"></div><div><div>Reines "soziales Treffen" ohne Anlass</div><div class="mode-note">Treffen um des Treffens willen ermüdet mich schnell.</div></div></div>
+        <div class="mode-item"><div class="mode-dot md-d"></div><div><div>Open-end-Treffen ohne gehen zu können, wenn ich will</div><div class="mode-note">Ich muss selbst entscheiden können, wann ich gehe.</div></div></div>
+        <div class="mode-item"><div class="mode-dot md-d"></div><div><div>Mehrere große Aktionen hintereinander ohne Pause</div><div class="mode-note">Bspw. Essen, dann Spaziergang, dann Bouldern.</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-label">Checkliste: Person einschätzen</div>
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-head">
+        <div><h3>Gute Bekannte</h3></div>
+        <span class="counter cnt-b" id="cnt-b">0 / 3</span>
+      </div>
+      <div id="items-b">
+        <div class="item" data-cat="b" data-val="1" onclick="toggle(this)">
+          <div class="cb cb-b"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div><div class="item-text">Geteiltes Thema oder Interesse als Fundament</div><div class="item-note">Darüber reden wir oder wir machen es gemeinsam.</div></div>
+        </div>
+        <div class="item" data-cat="b" data-val="1" onclick="toggle(this)">
+          <div class="cb cb-b"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div><div class="item-text">Co-Existenz möglich</div><div class="item-note">Funktioniert, wenn der gemeinsame Nenner ist: wir sind gern parallel mit irgendwas beschäftigt.</div></div>
+        </div>
+        <div class="item" data-cat="b" data-val="1" onclick="toggle(this)">
+          <div class="cb cb-b"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div><div class="item-text">Kein Erklärungsbedarf wenn Kontakt aussetzt</div><div class="item-note">Keine Rechenschaft nötig, aber ein kurzes "Ist alles in Ordnung?" ist beidseitig willkommen. Transparenz und Offenheit schätze ich auch im lockeren Kontakt.</div></div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div><h3>Potenzielle Freund:innen</h3></div>
+        <span class="counter cnt-f" id="cnt-f">0 / 10</span>
+      </div>
+      <div id="items-f">
+        <div class="item" data-cat="f" data-val="1" onclick="toggle(this)">
+          <div class="cb cb-f"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div><div class="item-text">Betritt auch gern mal die Meta-Ebene</div><div class="item-note">Reflektiert sich selbst laut, auch rückwirkend, auch ungefragt. Benennt eigene Widersprüche, statt sie zu übergehen: das war inkonsistent, das verstehe ich selbst nicht. Oder kommt von sich aus: wie war das eigentlich für dich?</div></div>
+        </div>
+        <div class="item" data-cat="f" data-val="1" onclick="toggle(this)">
+          <div class="cb cb-f"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div><div class="item-text">Zeigt echte Neugier</div><div class="item-note">Fragt nach.</div></div>
+        </div>
+        <div class="item" data-cat="f" data-val="1" onclick="toggle(this)">
+          <div class="cb cb-f"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div><div class="item-text">Gibt mir Raum ohne Erklärung</div><div class="item-note">Mein Rückzug braucht keine Erklärung. Aber ein "Hey, ist alles in Ordnung? Wir haben uns so lang nicht gehört." ist in Ordnung und manchmal sogar hilfreich für mich.</div></div>
+        </div>
+        <div class="item" data-cat="f" data-val="1" onclick="toggle(this)">
+          <div class="cb cb-f"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div><div class="item-text">Wir reden offen</div><div class="item-note">Innere Wahrheit interessiert uns beide 1000 mal mehr als Fassade.</div></div>
+        </div>
+        <div class="item" data-cat="f" data-val="1" onclick="toggle(this)">
+          <div class="cb cb-f"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div><div class="item-text">Im Großen und Ganzen werde ich verstanden.</div><div class="item-note">Manchmal muss ich mich selbst "übersetzen". Aber dann kommt es auch an. Nachfragen sind willkommen, Hauptsache, das Grundverständnis ist da.</div></div>
+        </div>
+        <div class="item" data-cat="f" data-val="1" onclick="toggle(this)">
+          <div class="cb cb-f"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div><div class="item-text">Versteht meinen Humor</div><div class="item-note">Ist auch ein bisschen diagnostisch. Heißt: Wir nehmen Realität ähnlich wahr.</div></div>
+        </div>
+        <div class="item" data-cat="f" data-val="1" onclick="toggle(this)">
+          <div class="cb cb-f"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div><div class="item-text">In schwierigen Phasen: präsent ohne zu drängen</div><div class="item-note">Fragt nach oder schickt ein Signal, kann aber aushalten, wenn ich mich phasenweise emotional nicht gut erreichbar anfühle.</div></div>
+        </div>
+        <div class="item" data-cat="f" data-val="1" onclick="toggle(this)">
+          <div class="cb cb-f"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div><div class="item-text">Epistemische Bescheidenheit</div><div class="item-note">Trennt Meinung von Fakt, kennt die Grenzen des eigenen Wissens. Kann Komplexität und Ambiguität der meisten wichtigen Themen des Lebens erkennen, anerkennen und aushalten.</div></div>
+        </div>
+        <div class="item" data-cat="f" data-val="1" onclick="toggle(this)">
+          <div class="cb cb-f"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div><div class="item-text">Ich kann Gedanken äußern, ohne sie zu übersetzen</div><div class="item-note">Ich muss meinen Gedankengang nicht vereinfachen oder erst erklären. Meine Art zu denken und zu formulieren, funktionieren für die andere Person direkt "out of the box".</div></div>
+        </div>
+        <div class="item" data-cat="f" data-val="1" onclick="toggle(this)">
+          <div class="cb cb-f"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div><div class="item-text">Verhält sich konsistent über verschiedene Kontexte</div><div class="item-note">Unter Stress, in Gruppen, allein: erkennbar dieselbe Person.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flag-card">
+    <div class="card-head">
+      <div><h3>Red Flags <span style="font-size:11.5px;font-weight:400;color:#aaa">— gelten für beide Kategorien</span></h3><div class="sub">Wenn das zutrifft, überdenke ich den Aufwand.</div></div>
+      <span class="counter cnt-r" id="cnt-r">0 / 8</span>
+    </div>
+    <div id="items-r">
+      <div class="item" data-cat="r" data-val="1" onclick="toggle(this)">
+        <div class="cb cb-r"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div><div class="item-text">Hat viel Meinung und wenig Verständnis</div><div class="item-note">Über Äußerlichkeiten, Verhalten, Gedanken, Entscheidungen anderer. Und muss das auch kundtun.</div></div>
+      </div>
+      <div class="item" data-cat="r" data-val="1" onclick="toggle(this)">
+        <div class="cb cb-r"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div><div class="item-text">Reagiert auf meine Bedürfnisse, Gefühle oder Grenzen defensiv oder aggressiv <span class="dealbreaker">Dealbreaker</span></div><div class="item-note">Auch in Form von Lächerlichmachen, Verhandeln-wollen oder Ignorieren. Meine Direktheit ist dann nicht sicher.</div></div>
+      </div>
+      <div class="item" data-cat="r" data-val="1" onclick="toggle(this)">
+        <div class="cb cb-r"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div><div class="item-text">Wahrnehmung wird als Verhandlungsmasse behandelt</div><div class="item-note">Wahrnehmungen sollen anerkannt und damit weitergearbeitet werden, nicht in Frage gestellt. Das gilt für meine wie für die der anderen Person.</div></div>
+      </div>
+      <div class="item" data-cat="r" data-val="1" onclick="toggle(this)">
+        <div class="cb cb-r"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div><div class="item-text">Grundannahmen müssen erst ausgehandelt werden</div><div class="item-note">Was für mich logisch, ethisch oder faktisch offensichtlich ist, muss ich rechtfertigen, bevor das eigentliche Gespräch beginnen kann. Oder wir kommen nie über Grundsatzverhandlungen hinaus.</div></div>
+      </div>
+      <div class="item" data-cat="r" data-val="1" onclick="toggle(this)">
+        <div class="cb cb-r"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div><div class="item-text">Kummerkasten-Dynamik ohne Gegenseitigkeit</div><div class="item-note">Ich reguliere, ohne dass das umgekehrt passiert. Strukturelles Ungleichgewicht.</div></div>
+      </div>
+      <div class="item" data-cat="r" data-val="1" onclick="toggle(this)">
+        <div class="cb cb-r"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div><div class="item-text">Kommentiert, wie viel oder wenig Emotion ich zeige</div><div class="item-note">Es ist, wie es ist. Ich möchte nicht darauf angesprochen werden, dass ich zu viel oder zu wenig fühle oder zeige.</div></div>
+      </div>
+      <div class="item" data-cat="r" data-val="1" onclick="toggle(this)">
+        <div class="cb cb-r"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div><div class="item-text">Deutet meine Direktheit als Angriff</div><div class="item-note">Ich gebe mir Mühe, Dinge angemessen zu formulieren — aber ich will das nicht immer müssen, und muss es auch nicht. Wer Direktheit grundsätzlich nicht aushält, macht ehrliche Kommunikation unmöglich.</div></div>
+      </div>
+      <div class="item" data-cat="r" data-val="1" onclick="toggle(this)">
+        <div class="cb cb-r"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div><div class="item-text">Emotionales Dumping ohne Einladung</div><div class="item-note">Teilt ungefragt emotionale Last ohne Bewusstsein dafür, ob der Moment und ich dafür da sind. Die Verantwortung für das Geteilte bleibt bei mir hängen.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="result-area">
+    <div class="result-grid">
+      <div class="res-card"><div class="res-label">Bekannte-Score</div><div class="res-val" id="score-b">0 <span class="res-max">/ 3</span></div></div>
+      <div class="res-card"><div class="res-label">Freund:innen-Score</div><div class="res-val" id="score-f">0 <span class="res-max">/ 8</span></div></div>
+    </div>
+    <div class="verdict" id="verdict">
+      <div class="verdict-label">Einschätzung</div>
+      <span style="color:#bbb">Noch keine Angaben — Checkliste oben ausfüllen.</span>
+    </div>
+    <button class="reset-btn" onclick="resetAll()">Zurücksetzen</button>
+  </div>
+
+  <div class="sec-label" style="margin-top: 2.5rem;">Offenheit oder Abladen? Eine Unterscheidungshilfe</div>
+  <div class="grid">
+    <div class="card">
+      <div class="card-head">
+        <div><h3>Zeichen von Offenheit</h3></div>
+      </div>
+      <div>
+        <div class="item" data-cat="x" data-val="0" onclick="toggle(this)"><div class="cb cb-b" style="border-color:#1D9E75;"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="item-text">Entsteht im Kontakt</div><div class="item-note">Irgendetwas im Gespräch hat den Raum dafür geöffnet. Es kommt nicht aus dem Nichts.</div></div></div>
+        <div class="item" data-cat="x" data-val="0" onclick="toggle(this)"><div class="cb cb-b" style="border-color:#1D9E75;"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="item-text">Dosiert sich</div><div class="item-note">Eskaliert nicht sofort auf maximale Tiefe. Gibt mir die Möglichkeit, mitzugehen oder nicht.</div></div></div>
+        <div class="item" data-cat="x" data-val="0" onclick="toggle(this)"><div class="cb cb-b" style="border-color:#1D9E75;"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="item-text">Spürt, ob ich dabei bin</div><div class="item-note">Die Person nimmt wahr, ob der Moment und ich dafür da sind. Und passt sich an.</div></div></div>
+        <div class="item" data-cat="x" data-val="0" onclick="toggle(this)"><div class="cb cb-b" style="border-color:#1D9E75;"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="item-text">Bleibt Eigentümer:in des Geteilten</div><div class="item-note">Die Verantwortung für das Gesagte bleibt bei der Person. Ich werde nicht zur Auffangstation.</div></div></div>
+        <div class="item" data-cat="x" data-val="0" onclick="toggle(this)"><div class="cb cb-b" style="border-color:#1D9E75;"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="item-text">Lässt Raum für mich</div><div class="item-note">Es entsteht ein Gespräch, kein Monolog. Meine Reaktion ist willkommen, aber nicht gefordert.</div></div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div><h3>Zeichen von Abladen</h3></div>
+      </div>
+      <div>
+        <div class="item" data-cat="x" data-val="0" onclick="toggle(this)"><div class="cb cb-r" style="border-color:#E24B4A;"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="item-text">Kommt ohne Einladung</div><div class="item-note">Kein Aufbau, kein Kontextcheck. Ich werde ohne Vorwarnung in etwas hineingezogen.</div></div></div>
+        <div class="item" data-cat="x" data-val="0" onclick="toggle(this)"><div class="cb cb-r" style="border-color:#E24B4A;"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="item-text">Eskaliert sofort</div><div class="item-note">Von null auf maximale emotionale Tiefe ohne Zwischenstufe. Kein Raum zum Ankommen.</div></div></div>
+        <div class="item" data-cat="x" data-val="0" onclick="toggle(this)"><div class="cb cb-r" style="border-color:#E24B4A;"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="item-text">Ignoriert, ob ich da bin</div><div class="item-note">Mein Zustand, meine Kapazität, der Moment — spielen keine Rolle.</div></div></div>
+        <div class="item" data-cat="x" data-val="0" onclick="toggle(this)"><div class="cb cb-r" style="border-color:#E24B4A;"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="item-text">Überträgt Verantwortung</div><div class="item-note">Das Geteilte landet bei mir. Ich fühle mich verantwortlich, ohne dass ich das gewählt hätte.</div></div></div>
+        <div class="item" data-cat="x" data-val="0" onclick="toggle(this)"><div class="cb cb-r" style="border-color:#E24B4A;"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="item-text">Hinterlässt ein Gewicht</div><div class="item-note">Nach dem Gespräch trage ich etwas, das mir nicht gehört.</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">Checkliste Sozialer Aufwand &nbsp;·&nbsp; Kalibriert Mai 2026</div>
+
+</div>
+<script>
+  var scores = { b: 0, f: 0, r: 0, x: 0 };
+  var counts = { b: 0, f: 0, r: 0, x: 0 };
+
+  function toggle(el) {
+    var cat = el.dataset.cat, val = parseInt(el.dataset.val);
+    if (el.classList.contains('checked')) { el.classList.remove('checked'); scores[cat] -= val; counts[cat] -= 1; }
+    else { el.classList.add('checked'); scores[cat] += val; counts[cat] += 1; }
+    update();
+  }
+
+  function update() {
+    document.getElementById('cnt-b').textContent = counts.b + ' / 3';
+    document.getElementById('cnt-f').textContent = counts.f + ' / 10';
+    document.getElementById('cnt-r').textContent = counts.r + ' / 8';
+    document.getElementById('score-b').innerHTML = scores.b + ' <span class="res-max">/ 3</span>';
+    document.getElementById('score-f').innerHTML = scores.f + ' <span class="res-max">/ 10</span>';
+
+    var rf = scores.r, db = document.querySelectorAll('#items-r .item.checked .dealbreaker').length;
+    var dbf = document.querySelectorAll('#items-r .item.checked .dealbreaker-f').length;
+    var nonDb = document.querySelectorAll('#items-r .item.checked').length - db - dbf;
+    var b = scores.b, f = scores.f, v = document.getElementById('verdict');
+    var combined = b + f;
+    var txt = '', col = '#1a1a1a';
+    var rfNote = nonDb === 1 ? ' (Eine Red Flag ist aktiv, ansprechbar, kein Ausschluss.)' : '';
+
+    if (db >= 1) {
+      txt = 'Dealbreaker aktiv. Kein Aufwand, unabhängig davon, wie viel sonst stimmt.'; col = '#A32D2D';
+    } else if (nonDb >= 3) {
+      txt = 'Drei oder mehr Red Flags: das entspricht in der Summe einem Dealbreaker. Aufwand ist hier nicht sinnvoll.'; col = '#A32D2D';
+    } else if (nonDb === 2) {
+      txt = 'Zwei Red Flags: kritisch. Ich beobachte genau, ob sich das ändert, und setze eine klare Grenze.'; col = '#854F0B';
+    } else if (combined < 4) {
+      if (b === 3) { txt = 'Bekannte-Seite vollständig bewertet — sehr gutes Bild. Freundschaftspotenzial noch nicht einschätzbar, mehr gemeinsame Situationen schaffen.' + rfNote; col = '#0F6E56'; }
+      else { txt = 'Zu wenig Daten oder zu wenig Potenzial. Mehr Situationen beobachten, oder akzeptieren, dass hier nichts zu holen ist.' + rfNote; col = '#888'; }
+    } else if (combined >= 10) {
+      // b max ist 3, daher ist f hier immer >= 7
+      if (f >= 8) { txt = 'Super, auf beiden Ebenen. Freundschaftspotenzial ist klar, auch als Bekannte sehr gut. Investition lohnt sich sehr.' + rfNote; col = '#3C3489'; }
+      else { txt = 'Starkes Gesamtbild. Sehr interessantes Freundschaftspotenzial, solide Basis als Bekannte.' + rfNote; col = '#3C3489'; }
+    } else if (combined >= 7) {
+      if (f >= 7) { txt = 'Gutes Gesamtbild. Klares Freundschaftspotenzial, lohnt sich weiter zu investieren.' + rfNote; col = '#534AB7'; }
+      else if (f >= 4) { txt = 'Gutes Gesamtbild. Freundschaftspotenzial ist vorhanden, noch mehr Situationen beobachten.' + rfNote; col = '#534AB7'; }
+      else if (b === 3) { txt = 'Sehr gute Bekannte. Als Freund:in noch zu wenig Daten. Mehr Zeit miteinander.' + rfNote; col = '#0F6E56'; }
+      else { txt = 'Gutes Gesamtbild, noch kein klares Profil. Weiter beobachten.' + rfNote; col = '#888'; }
+    } else {
+      // combined 4–6
+      if (f >= 4) { txt = 'Interessant, auf beiden Ebenen. Lohnt sich, mehr Daten zu sammeln.' + rfNote; col = '#534AB7'; }
+      else if (b === 3) { txt = 'Gute Bekannte. Freundschaftspotenzial noch zu wenig beobachtet — mehr gemeinsame Situationen schaffen.' + rfNote; col = '#0F6E56'; }
+      else if (b >= 2) { txt = 'Interessante Bekannte. Noch zu wenig Daten für mehr. Weiter beobachten.' + rfNote; col = '#0F6E56'; }
+      else { txt = 'Gerade so interessant. Mehr Daten sammeln bevor ich investiere.' + rfNote; col = '#888'; }
+    }
+
+    v.innerHTML = '<div class="verdict-label">Einschätzung</div><span style="color:' + col + '">' + txt + '</span>';
+  }
+
+  function resetAll() {
+    document.querySelectorAll('.item.checked').forEach(function(el) { el.classList.remove('checked'); });
+    scores = { b: 0, f: 0, r: 0, x: 0 }; counts = { b: 0, f: 0, r: 0, x: 0 }; update();
+  }
+</script>
+</body>
+</html>
