@@ -363,36 +363,62 @@
 
     function resize() { c.width = window.innerWidth; c.height = window.innerHeight; draw(); }
 
+    // Draw a soft elliptical nebula cloud
+    function neb(cx, cy, rx, ry, angle, c0, c1) {
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(angle);
+      ctx.scale(rx, ry);
+      var g = ctx.createRadialGradient(0, 0, 0, 0, 0, 1);
+      g.addColorStop(0,   c0);
+      g.addColorStop(0.5, c1);
+      g.addColorStop(1,   'rgba(0,0,0,0)');
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(0, 0, 1, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
     function draw() {
       ctx.clearRect(0, 0, c.width, c.height);
       var W = c.width, H = c.height;
 
-      // --- GALAXY SPIRAL ---
+      // === NEBULA LAYER — big soft coloured clouds ===
+      neb(W*0.08, H*0.18, W*0.40, H*0.34, -0.3,  'rgba(45,25,200,0.28)',  'rgba(25,12,150,0.10)'); // indigo top-left
+      neb(W*0.46, H*0.50, W*0.44, H*0.40,  0.5,  'rgba(110,20,210,0.24)', 'rgba(70,15,170,0.09)'); // violet centre
+      neb(W*0.88, H*0.62, W*0.38, H*0.46,  0.8,  'rgba(215,35,145,0.26)', 'rgba(160,25,100,0.10)'); // hot pink right
+      neb(W*0.18, H*0.80, W*0.42, H*0.32, -0.6,  'rgba(35,75,230,0.22)',  'rgba(20,50,180,0.08)'); // blue bottom-left
+      neb(W*0.76, H*0.22, W*0.46, H*0.40,  0.2,  'rgba(190,55,175,0.22)', 'rgba(140,35,130,0.08)'); // rose around galaxy
+      neb(W*0.60, H*0.08, W*0.22, H*0.20,  0.1,  'rgba(70,110,255,0.26)', 'rgba(45,75,210,0.10)'); // blue accent top
+
+      // === GALAXY SPIRAL ===
       var cx = W * 0.76, cy = H * 0.26;
-      var scale = Math.min(W, H) * 0.36;
+      var scale = Math.min(W, H) * 0.42;
       var rG = rng(1337);
 
-      // Glowing core — warm amber-gold
-      var core = ctx.createRadialGradient(cx, cy, 0, cx, cy, scale * 0.14);
-      core.addColorStop(0,   'rgba(255,240,200,0.50)');
-      core.addColorStop(0.4, 'rgba(220,170,130,0.18)');
-      core.addColorStop(1,   'rgba(160,100,100,0)');
+      // Glowing core
+      var core = ctx.createRadialGradient(cx, cy, 0, cx, cy, scale * 0.13);
+      core.addColorStop(0,   'rgba(255,248,215,0.90)');
+      core.addColorStop(0.3, 'rgba(255,210,160,0.50)');
+      core.addColorStop(0.7, 'rgba(200,120,180,0.18)');
+      core.addColorStop(1,   'rgba(120,40,120,0)');
       ctx.fillStyle = core;
       ctx.beginPath();
-      ctx.arc(cx, cy, scale * 0.14, 0, Math.PI * 2);
+      ctx.arc(cx, cy, scale * 0.13, 0, Math.PI * 2);
       ctx.fill();
 
-      // Outer haze — dusty rose nebula
-      var haze = ctx.createRadialGradient(cx, cy, 0, cx, cy, scale * 0.60);
-      haze.addColorStop(0,   'rgba(200,130,160,0.07)');
-      haze.addColorStop(0.6, 'rgba(140,90,160,0.04)');
-      haze.addColorStop(1,   'rgba(80,40,100,0)');
+      // Wide haze
+      var haze = ctx.createRadialGradient(cx, cy, 0, cx, cy, scale * 0.68);
+      haze.addColorStop(0,   'rgba(200,100,200,0.14)');
+      haze.addColorStop(0.5, 'rgba(120,50,200,0.07)');
+      haze.addColorStop(1,   'rgba(60,20,140,0)');
       ctx.fillStyle = haze;
       ctx.beginPath();
-      ctx.arc(cx, cy, scale * 0.60, 0, Math.PI * 2);
+      ctx.arc(cx, cy, scale * 0.68, 0, Math.PI * 2);
       ctx.fill();
 
-      // Spiral arms — drawn with canvas transform for perspective flatten
+      // Spiral arms
       ctx.save();
       ctx.translate(cx, cy);
       ctx.scale(1, 0.42);
@@ -400,20 +426,20 @@
 
       for (var arm = 0; arm < 2; arm++) {
         var aOff = arm * Math.PI;
-        for (var n = 1; n < 800; n++) {
-          var t  = n / 800;
+        for (var n = 1; n < 1100; n++) {
+          var t  = n / 1100;
           var th = t * Math.PI * 3.8 + aOff;
-          var rv = Math.pow(t, 0.65) * scale * 0.50;
+          var rv = Math.pow(t, 0.65) * scale * 0.54;
           var sc = (rG() - 0.5) * rv * 0.30;
           var sa = rG() * Math.PI * 2;
           var px = (rv + sc * Math.cos(sa)) * Math.cos(th);
           var py = (rv + sc * Math.sin(sa)) * Math.sin(th);
-          var al = (1 - t) * 0.55 * (0.35 + rG() * 0.65);
-          var sr = rG() * 1.2 + 0.3;
-          // colour: warm gold near core → dusty rose → pale mauve at edges
-          var rr = Math.round(255 - t * 80);
-          var gg = Math.round(230 - t * 110);
-          var bb = Math.round(160 + t * 80);
+          var al = (1 - t) * 0.80 * (0.4 + rG() * 0.6);
+          var sr = rG() * 1.5 + 0.35;
+          // gold → rose → violet
+          var rr = Math.round(255 - t * 90);
+          var gg = Math.round(220 - t * 140);
+          var bb = Math.round(140 + t * 115);
           ctx.beginPath();
           ctx.arc(px, py, sr, 0, Math.PI * 2);
           ctx.fillStyle = 'rgba(' + rr + ',' + gg + ',' + bb + ',' + al.toFixed(3) + ')';
