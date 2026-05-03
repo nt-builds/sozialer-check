@@ -69,23 +69,27 @@
   @media (max-width: 680px) { .grid { grid-template-columns: 1fr; } .mode-grid { grid-template-columns: 1fr; } }
 
   .card { background: #0c0c22; border: 1px solid #1e1e45; border-radius: 14px; overflow: hidden; }
+  .card-b { border-top: 2px solid #00c9a755; }
+  .card-f { border-top: 2px solid #7c6ff755; }
   .flag-card { background: #0c0c22; border: 1px solid #1e1e45; border-top: 2px solid #e24b4a; border-radius: 14px; overflow: hidden; margin-bottom: 20px; }
   .card-head {
-    padding: 13px 18px; border-bottom: 1px solid #1a1a40; background: #0a0a1e;
+    padding: 13px 18px; border-bottom: 1px solid #1a1a40;
+    background: linear-gradient(135deg, #0c0c22 60%, #0f0e28 100%);
     display: flex; align-items: center; justify-content: space-between;
   }
   .card-head h3 { font-size: 14px; font-weight: 500; color: #ece9ff; }
   .sub { font-size: 12px; color: #4a4880; margin-top: 2px; }
 
   .counter { font-size: 12px; font-weight: 600; padding: 3px 11px; border-radius: 20px; min-width: 48px; text-align: center; }
-  .cnt-b { background: #051f1a; color: #00c9a7; border: 1px solid #0a3830; }
-  .cnt-f { background: #100e30; color: #9d94f8; border: 1px solid #1e1a50; }
-  .cnt-r { background: #1e0808; color: #f07070; border: 1px solid #3a1010; }
+  .cnt-b { background: #051f1a; color: #00c9a7; border: 1px solid #0a3830; box-shadow: 0 0 10px #00c9a722; text-shadow: 0 0 8px #00c9a7aa; }
+  .cnt-f { background: #100e30; color: #9d94f8; border: 1px solid #1e1a50; box-shadow: 0 0 10px #9d94f822; text-shadow: 0 0 8px #9d94f8aa; }
+  .cnt-r { background: #1e0808; color: #f07070; border: 1px solid #3a1010; box-shadow: 0 0 10px #f0707022; text-shadow: 0 0 8px #f07070aa; }
 
   .item {
     display: flex; align-items: flex-start; gap: 13px;
     padding: 11px 18px; border-bottom: 1px solid #111128;
-    cursor: pointer; transition: background 0.15s; user-select: none;
+    cursor: pointer; transition: background 0.2s, border-left-color 0.2s; user-select: none;
+    border-left: 2px solid transparent;
   }
   .item:last-child { border-bottom: none; }
   .item:hover { background: #0f0f28; }
@@ -93,20 +97,23 @@
   .cb {
     width: 18px; height: 18px; border-radius: 5px; border: 1.5px solid #2e2e60;
     background: #0c0c22; flex-shrink: 0; margin-top: 2px;
-    display: flex; align-items: center; justify-content: center; transition: all 0.15s;
+    display: flex; align-items: center; justify-content: center; transition: all 0.2s;
   }
   .cb svg { display: none; }
   .item.checked .cb svg { display: block; }
-  .item.checked .cb-b { background: #00c9a7; border-color: #00c9a7; box-shadow: 0 0 8px #00c9a755; }
-  .item.checked .cb-f { background: #7c6ff7; border-color: #7c6ff7; box-shadow: 0 0 8px #7c6ff755; }
-  .item.checked .cb-r { background: #e24b4a; border-color: #e24b4a; box-shadow: 0 0 8px #e24b4a55; }
+  .item.checked .cb-b { background: #00c9a7; border-color: #00c9a7; box-shadow: 0 0 12px #00c9a7aa, 0 0 4px #00c9a7; }
+  .item.checked .cb-f { background: #7c6ff7; border-color: #7c6ff7; box-shadow: 0 0 12px #7c6ff7aa, 0 0 4px #7c6ff7; }
+  .item.checked .cb-r { background: #e24b4a; border-color: #e24b4a; box-shadow: 0 0 12px #e24b4aaa, 0 0 4px #e24b4a; }
 
   .item-text { font-size: 13.5px; color: #4a4880; line-height: 1.5; }
   .item-note { font-size: 12px; color: #32325a; margin-top: 3px; line-height: 1.45; }
 
   .item.checked .item-text { color: #ece9ff; font-weight: 500; }
   .item.checked .item-note { color: #6b6890; }
-  .item.checked { background: #0f0f28; }
+
+  #items-b .item.checked { background: linear-gradient(90deg, #00c9a714 0%, #0c0c2200 60%); border-left-color: #00c9a755; }
+  #items-f .item.checked { background: linear-gradient(90deg, #7c6ff714 0%, #0c0c2200 60%); border-left-color: #7c6ff755; }
+  #items-r .item.checked { background: linear-gradient(90deg, #e24b4a14 0%, #0c0c2200 60%); border-left-color: #e24b4a55; }
 
   .dealbreaker { font-size: 10px; font-weight: 600; color: #f07070; background: #200808; border: 1px solid #3a1010; padding: 1px 7px; border-radius: 10px; margin-left: 6px; vertical-align: middle; }
   .dealbreaker-f { font-size: 10px; font-weight: 600; color: #9d94f8; background: #100e30; border: 1px solid #1e1a50; padding: 1px 7px; border-radius: 10px; margin-left: 6px; vertical-align: middle; }
@@ -171,7 +178,7 @@
   <div class="sec-label">Checkliste: Person einschätzen</div>
   <div class="grid">
 
-    <div class="card">
+    <div class="card card-b">
       <div class="card-head">
         <div><h3>Gute Bekannte</h3></div>
         <span class="counter cnt-b" id="cnt-b">0 / 3</span>
@@ -192,7 +199,7 @@
       </div>
     </div>
 
-    <div class="card">
+    <div class="card card-f">
       <div class="card-head">
         <div><h3>Potenzielle Freund:innen</h3></div>
         <span class="counter cnt-f" id="cnt-f">0 / 10</span>
