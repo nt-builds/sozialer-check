@@ -59,7 +59,7 @@
     margin-bottom: 12px;
   }
   .mode-label-p { color: #d4a0c8; }   /* nebelrose */
-  .mode-label-b { color: #60cdb0; }   /* meeresleuchten */
+  .mode-label-b { color: #6888f0; }   /* meeresleuchten */
   .mode-label-d { color: #c89050; }   /* altes gold */
   .mode-item {
     font-size: 13px; color: #ccc8b8; line-height: 1.5;
@@ -69,7 +69,7 @@
   .mode-item:last-child { border-bottom: none; }
   .mode-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; margin-top: 6px; }
   .md-p { background: #d4a0c8; box-shadow: 0 0 7px #d4a0c866; }
-  .md-b { background: #60cdb0; box-shadow: 0 0 7px #60cdb066; }
+  .md-b { background: #6888f0; box-shadow: 0 0 7px #6888f066; }
   .md-d { background: #c89050; box-shadow: 0 0 7px #c8905066; }
   .mode-note { font-size: 11.5px; color: #5c4d70; margin-top: 3px; line-height: 1.45; }
 
@@ -78,7 +78,7 @@
   @media (max-width: 680px) { .grid { grid-template-columns: 1fr; } .mode-grid { grid-template-columns: 1fr; } }
 
   .card { background: rgba(20, 14, 34, 0.72); border: 1px solid #211630; border-radius: 14px; overflow: hidden; backdrop-filter: blur(2px); }
-  .card-b { background: rgba(8, 30, 26, 0.76); border-top: 2px solid #60cdb070; }
+  .card-b { background: rgba(8, 10, 38, 0.78); border-top: 2px solid #6888f070; }
   .card-f { background: rgba(30, 10, 34, 0.76); border-top: 2px solid #d4a0c870; }
   .flag-card { background: rgba(16, 8, 11, 0.78); border: 1px solid #211630; border-top: 2px solid #a04848; border-radius: 14px; overflow: hidden; margin-bottom: 20px; backdrop-filter: blur(2px); }
   .card-head {
@@ -86,14 +86,14 @@
     background: rgba(10, 7, 20, 0.55);
     display: flex; align-items: center; justify-content: space-between;
   }
-  .card-b .card-head { background: rgba(5, 18, 16, 0.60); }
+  .card-b .card-head { background: rgba(5, 7, 25, 0.62); }
   .card-f .card-head { background: rgba(18, 6, 22, 0.60); }
   .flag-card .card-head { background: rgba(18, 5, 8, 0.60); }
   .card-head h3 { font-size: 14px; font-weight: 400; color: #f0ece0; }
   .sub { font-size: 12px; color: #5c4d70; margin-top: 2px; }
 
   .counter { font-size: 12px; font-weight: 600; padding: 3px 11px; border-radius: 20px; min-width: 48px; text-align: center; }
-  .cnt-b { background: #071a16; color: #60cdb0; border: 1px solid #0e302a; box-shadow: 0 0 10px #60cdb025; text-shadow: 0 0 8px #60cdb099; }
+  .cnt-b { background: #08091e; color: #6888f0; border: 1px solid #141840; box-shadow: 0 0 10px #6888f025; text-shadow: 0 0 8px #6888f099; }
   .cnt-f { background: #180e22; color: #d4a0c8; border: 1px solid #2e1840; box-shadow: 0 0 10px #d4a0c825; text-shadow: 0 0 8px #d4a0c899; }
   .cnt-r { background: #1e0c0c; color: #e88080; border: 1px solid #381414; box-shadow: 0 0 10px #e8808025; text-shadow: 0 0 8px #e8808099; }
 
@@ -113,7 +113,7 @@
   }
   .cb svg { display: none; }
   .item.checked .cb svg { display: block; }
-  .item.checked .cb-b { background: #60cdb0; border-color: #60cdb0; box-shadow: 0 0 14px #60cdb0aa, 0 0 4px #60cdb0; }
+  .item.checked .cb-b { background: #6888f0; border-color: #6888f0; box-shadow: 0 0 14px #6888f0aa, 0 0 4px #6888f0; }
   .item.checked .cb-f { background: #c888bc; border-color: #c888bc; box-shadow: 0 0 14px #c888bcaa, 0 0 4px #c888bc; }
   .item.checked .cb-r { background: #c85858; border-color: #c85858; box-shadow: 0 0 14px #c85858aa, 0 0 4px #c85858; }
 
@@ -123,7 +123,7 @@
   .item.checked .item-text { color: #f0ece0; font-weight: 500; }
   .item.checked .item-note { color: #7a6890; }
 
-  #items-b .item.checked { background: radial-gradient(ellipse 60% 130% at 0% 50%, #60cdb018 0%, transparent 100%); border-left-color: #60cdb055; }
+  #items-b .item.checked { background: radial-gradient(ellipse 60% 130% at 0% 50%, #6888f01a 0%, transparent 100%); border-left-color: #6888f055; }
   #items-f .item.checked { background: radial-gradient(ellipse 60% 130% at 0% 50%, #d4a0c818 0%, transparent 100%); border-left-color: #d4a0c855; }
   #items-r .item.checked { background: radial-gradient(ellipse 60% 130% at 0% 50%, #c8585818 0%, transparent 100%); border-left-color: #c8585855; }
 
@@ -513,7 +513,7 @@
     } else if (nonDb === 2) {
       txt = 'Zwei Red Flags: kritisch. Ich beobachte genau, ob sich das ändert, und setze eine klare Grenze.'; col = '#c89050';
     } else if (combined < 4) {
-      if (b === 3) { txt = 'Bekannte-Seite vollständig bewertet — sehr gutes Bild. Freundschaftspotenzial noch nicht einschätzbar, mehr gemeinsame Situationen schaffen.' + rfNote; col = '#60cdb0'; }
+      if (b === 3) { txt = 'Bekannte-Seite vollständig bewertet — sehr gutes Bild. Freundschaftspotenzial noch nicht einschätzbar, mehr gemeinsame Situationen schaffen.' + rfNote; col = '#6888f0'; }
       else { txt = 'Zu wenig Daten oder zu wenig Potenzial. Mehr Situationen beobachten, oder akzeptieren, dass hier nichts zu holen ist.' + rfNote; col = '#5c4d70'; }
     } else if (combined >= 10) {
       if (f >= 8) { txt = 'Super, auf beiden Ebenen. Freundschaftspotenzial ist klar, auch als Bekannte sehr gut. Investition lohnt sich sehr.' + rfNote; col = '#d4a0c8'; }
@@ -521,12 +521,12 @@
     } else if (combined >= 7) {
       if (f >= 7) { txt = 'Gutes Gesamtbild. Klares Freundschaftspotenzial, lohnt sich weiter zu investieren.' + rfNote; col = '#d4a0c8'; }
       else if (f >= 4) { txt = 'Gutes Gesamtbild. Freundschaftspotenzial ist vorhanden, noch mehr Situationen beobachten.' + rfNote; col = '#d4a0c8'; }
-      else if (b === 3) { txt = 'Sehr gute Bekannte. Als Freund:in noch zu wenig Daten. Mehr Zeit miteinander.' + rfNote; col = '#60cdb0'; }
+      else if (b === 3) { txt = 'Sehr gute Bekannte. Als Freund:in noch zu wenig Daten. Mehr Zeit miteinander.' + rfNote; col = '#6888f0'; }
       else { txt = 'Gutes Gesamtbild, noch kein klares Profil. Weiter beobachten.' + rfNote; col = '#5c4d70'; }
     } else {
       if (f >= 4) { txt = 'Interessant, auf beiden Ebenen. Lohnt sich, mehr Daten zu sammeln.' + rfNote; col = '#d4a0c8'; }
-      else if (b === 3) { txt = 'Gute Bekannte. Freundschaftspotenzial noch zu wenig beobachtet — mehr gemeinsame Situationen schaffen.' + rfNote; col = '#60cdb0'; }
-      else if (b >= 2) { txt = 'Interessante Bekannte. Noch zu wenig Daten für mehr. Weiter beobachten.' + rfNote; col = '#60cdb0'; }
+      else if (b === 3) { txt = 'Gute Bekannte. Freundschaftspotenzial noch zu wenig beobachtet — mehr gemeinsame Situationen schaffen.' + rfNote; col = '#6888f0'; }
+      else if (b >= 2) { txt = 'Interessante Bekannte. Noch zu wenig Daten für mehr. Weiter beobachten.' + rfNote; col = '#6888f0'; }
       else { txt = 'Gerade so interessant. Mehr Daten sammeln bevor ich investiere.' + rfNote; col = '#5c4d70'; }
     }
 
