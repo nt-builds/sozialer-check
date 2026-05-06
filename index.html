@@ -735,15 +735,12 @@
         else if (f >= 11)    { txt = 'Außergewöhnlich starkes Freundschaftspotenzial. Klares Ja.' + flagSuffix; col = '#d4a0c8'; }
         else if (f >= 9 && bFull) { txt = 'Klares Ja auf beiden Ebenen. Diese Verbindung lohnt sich sehr.' + flagSuffix; col = '#d4a0c8'; }
         else if (f >= 9)     { txt = 'Klares Ja. Diese Verbindung lohnt sich sehr.' + flagSuffix; col = '#d4a0c8'; }
-        // Synergie: starkes Fundament + mittelmäßiges f
-        else if (bFull && f >= 6) { txt = 'Als Bekannte sehr gut. Freundschaftspotenzial vorhanden, aber nicht das stärkste Bild.' + flagSuffix; col = '#6888f0'; }
-        // Mittelmäßiges f
-        else if (f >= 6)     { txt = 'Mittelmäßig für jemanden, den ich schon kenne. Bewusst auf Bekannte-Ebene halten oder aktiv vertiefen.' + flagSuffix; col = '#c89050'; }
-        // Nur Fundament
+        else if (f >= 6 && bFull) { txt = 'Als Bekannte sehr gut. Freundschaftspotenzial vorhanden, aber nicht das stärkste Bild.' + flagSuffix; col = '#6888f0'; }
+        else if (f >= 6 && bGood) { txt = 'Mittelmäßig auf Freundschaftsebene — bewusst auf der Bekannte-Ebene halten, die da ist, oder aktiv vertiefen.' + flagSuffix; col = '#c89050'; }
+        else if (f >= 6)     { txt = 'Mittelmäßig auf Freundschaftsebene, wenig auf Bekannte-Ebene. Kritisch prüfen, ob Investition sinnvoll ist.' + flagSuffix; col = '#c89050'; }
         else if (bFull)      { txt = 'Als Bekannte gut. Freundschaftspotenzial ist bisher nicht da — ist das so in Ordnung?' + flagSuffix; col = '#6888f0'; }
-        // Wenig von beidem
-        else if (bGood)      { txt = 'Wenig Resonanz auf Freundschaftsebene für jemanden, den ich schon kenne. Überdenken.' + flagSuffix; col = '#e88080'; }
-        else                 { txt = 'Wenig Resonanz auf beiden Ebenen für einen bestehenden Kontakt. Lohnt sich, das ehrlich zu bewerten.' + flagSuffix; col = '#e88080'; }
+        else if (bGood)      { txt = 'Wenig Resonanz auf Freundschaftsebene. Ehrlich fragen, ob diese Verbindung noch Sinn macht.' + flagSuffix; col = '#e88080'; }
+        else                 { txt = 'Wenig auf beiden Ebenen. Lohnt sich, ehrlich zu prüfen, ob ich hier weiter investieren möchte.' + flagSuffix; col = '#e88080'; }
       }
     }
 
