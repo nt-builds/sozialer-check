@@ -337,12 +337,16 @@
     <div class="card card-f">
       <div class="card-head">
         <div><h3>Potenzielle Freund:innen</h3></div>
-        <span class="counter cnt-f" id="cnt-f">0 / 11</span>
+        <span class="counter cnt-f" id="cnt-f">0 / 13</span>
       </div>
       <div id="items-f">
         <div class="item" data-cat="f" data-val="1" onclick="toggle(this)">
           <div class="cb cb-f"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          <div><div class="item-text">Betritt auch gern mal die Meta-Ebene</div><div class="item-note">Reflektiert sich selbst laut, auch rückwirkend, auch ungefragt. Benennt eigene Widersprüche, statt sie zu übergehen: das war inkonsistent, das verstehe ich selbst nicht. Oder kommt von sich aus: wie war das eigentlich für dich?</div></div>
+          <div><div class="item-text">Tritt aus Situationen heraus</div><div class="item-note">Reflektiert das eigene Erleben rückblickend, auch ungefragt. Benennt Widersprüche im eigenen Verhalten, statt sie zu übergehen. Kommt von sich aus auf Dynamiken zu sprechen: wie war das eigentlich für dich?</div></div>
+        </div>
+        <div class="item" data-cat="f" data-val="1" onclick="toggle(this)">
+          <div class="cb cb-f"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div><div class="item-text">Denkt in Mustern und Zusammenhängen</div><div class="item-note">Geht eine Flughöhe höher als die einzelne Situation. Sieht Strukturen, verbindet Punkte über Situationen hinaus, denkt systemisch statt episodisch.</div></div>
         </div>
         <div class="item" data-cat="f" data-val="1" onclick="toggle(this)">
           <div class="cb cb-f"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
@@ -383,6 +387,10 @@
         <div class="item" data-cat="f" data-val="1" onclick="toggle(this)">
           <div class="cb cb-f"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <div><div class="item-text">Ist da, wenn es drauf ankommt</div><div class="item-note">Bietet proaktiv Unterstützung an, wenn ich Schwierigkeiten äußere — und ist am Start, wenn ich um Hilfe für irgendwas bitte.</div></div>
+        </div>
+        <div class="item" data-cat="f" data-val="1" onclick="toggle(this)">
+          <div class="cb cb-f"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div><div class="item-text">Übernimmt den eigenen Anteil</div><div class="item-note">Benennt ohne Umwege, was von ihr kommt — in Konflikten, in schwierigen Momenten, in Dynamiken, die nicht funktionieren. Wartet nicht darauf, dass ich es ansprechen muss.</div></div>
         </div>
       </div>
     </div>
@@ -432,7 +440,7 @@
   <div class="result-area">
     <div class="result-grid">
       <div class="res-card"><div class="res-label">Bekannte-Score</div><div class="res-val" id="score-b">0 <span class="res-max">/ 4</span></div></div>
-      <div class="res-card"><div class="res-label">Freund:innen-Score</div><div class="res-val" id="score-f">0 <span class="res-max">/ 11</span></div></div>
+      <div class="res-card"><div class="res-label">Freund:innen-Score</div><div class="res-val" id="score-f">0 <span class="res-max">/ 13</span></div></div>
     </div>
     <div class="verdict" id="verdict">
       <div class="verdict-label">Einschätzung</div>
@@ -558,7 +566,7 @@
       for (var arm = 0; arm < 2; arm++) {
         var aOff = arm * Math.PI;
         for (var n = 1; n < 1100; n++) {
-          var t  = n / 1100;
+          var t  = n / 1300;
           var th = t * Math.PI * 3.8 + aOff;
           var rv = Math.pow(t, 0.65) * scale * 0.54;
           var sc = (rG() - 0.5) * rv * 0.30;
@@ -629,10 +637,10 @@
 
   function update() {
     document.getElementById('cnt-b').textContent = counts.b + ' / 4';
-    document.getElementById('cnt-f').textContent = counts.f + ' / 11';
+    document.getElementById('cnt-f').textContent = counts.f + ' / 13';
     document.getElementById('cnt-r').textContent = counts.r + ' / 8';
     document.getElementById('score-b').innerHTML = scores.b + ' <span class="res-max">/ 4</span>';
-    document.getElementById('score-f').innerHTML = scores.f + ' <span class="res-max">/ 11</span>';
+    document.getElementById('score-f').innerHTML = scores.f + ' <span class="res-max">/ 13</span>';
 
     var db    = document.querySelectorAll('#items-r .item.checked .dealbreaker').length;
     var dbf   = document.querySelectorAll('#items-r .item.checked .dealbreaker-f').length;
