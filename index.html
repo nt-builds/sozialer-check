@@ -337,7 +337,7 @@
     <div class="card card-f">
       <div class="card-head">
         <div><h3>Potenzielle Freund:innen</h3></div>
-        <span class="counter cnt-f" id="cnt-f">0 / 10</span>
+        <span class="counter cnt-f" id="cnt-f">0 / 11</span>
       </div>
       <div id="items-f">
         <div class="item" data-cat="f" data-val="1" onclick="toggle(this)">
@@ -379,6 +379,10 @@
         <div class="item" data-cat="f" data-val="1" onclick="toggle(this)">
           <div class="cb cb-f"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <div><div class="item-text">Verhält sich konsistent über verschiedene Kontexte</div><div class="item-note">Unter Stress, in Gruppen, allein: erkennbar dieselbe Person.</div></div>
+        </div>
+        <div class="item" data-cat="f" data-val="1" onclick="toggle(this)">
+          <div class="cb cb-f"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div><div class="item-text">Ist da, wenn es drauf ankommt</div><div class="item-note">Bietet proaktiv Unterstützung an, wenn ich Schwierigkeiten äußere — und ist am Start, wenn ich um Hilfe für irgendwas bitte.</div></div>
         </div>
       </div>
     </div>
@@ -428,7 +432,7 @@
   <div class="result-area">
     <div class="result-grid">
       <div class="res-card"><div class="res-label">Bekannte-Score</div><div class="res-val" id="score-b">0 <span class="res-max">/ 4</span></div></div>
-      <div class="res-card"><div class="res-label">Freund:innen-Score</div><div class="res-val" id="score-f">0 <span class="res-max">/ 10</span></div></div>
+      <div class="res-card"><div class="res-label">Freund:innen-Score</div><div class="res-val" id="score-f">0 <span class="res-max">/ 11</span></div></div>
     </div>
     <div class="verdict" id="verdict">
       <div class="verdict-label">Einschätzung</div>
@@ -625,10 +629,10 @@
 
   function update() {
     document.getElementById('cnt-b').textContent = counts.b + ' / 4';
-    document.getElementById('cnt-f').textContent = counts.f + ' / 10';
+    document.getElementById('cnt-f').textContent = counts.f + ' / 11';
     document.getElementById('cnt-r').textContent = counts.r + ' / 8';
     document.getElementById('score-b').innerHTML = scores.b + ' <span class="res-max">/ 4</span>';
-    document.getElementById('score-f').innerHTML = scores.f + ' <span class="res-max">/ 10</span>';
+    document.getElementById('score-f').innerHTML = scores.f + ' <span class="res-max">/ 11</span>';
 
     var db    = document.querySelectorAll('#items-r .item.checked .dealbreaker').length;
     var dbf   = document.querySelectorAll('#items-r .item.checked .dealbreaker-f').length;
