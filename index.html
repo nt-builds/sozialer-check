@@ -312,7 +312,7 @@
     <div class="card card-b">
       <div class="card-head">
         <div><h3>Gute Bekannte</h3></div>
-        <span class="counter cnt-b" id="cnt-b">0 / 3</span>
+        <span class="counter cnt-b" id="cnt-b">0 / 4</span>
       </div>
       <div id="items-b">
         <div class="item" data-cat="b" data-val="1" onclick="toggle(this)">
@@ -326,6 +326,10 @@
         <div class="item" data-cat="b" data-val="1" onclick="toggle(this)">
           <div class="cb cb-b"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <div><div class="item-text">Kein Erklärungsbedarf wenn Kontakt aussetzt</div><div class="item-note">Keine Rechenschaft nötig, aber ein kurzes "Ist alles in Ordnung?" ist beidseitig willkommen. Transparenz und Offenheit schätze ich auch im lockeren Kontakt.</div></div>
+        </div>
+        <div class="item" data-cat="b" data-val="1" onclick="toggle(this)">
+          <div class="cb cb-b"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div><div class="item-text">Ist unterhaltsam</div><div class="item-note">Erzählt Begebenheiten auf eine Art, die ich erheiternd finde oder bringt mich viel zum Lachen.</div></div>
         </div>
       </div>
     </div>
@@ -423,7 +427,7 @@
 
   <div class="result-area">
     <div class="result-grid">
-      <div class="res-card"><div class="res-label">Bekannte-Score</div><div class="res-val" id="score-b">0 <span class="res-max">/ 3</span></div></div>
+      <div class="res-card"><div class="res-label">Bekannte-Score</div><div class="res-val" id="score-b">0 <span class="res-max">/ 4</span></div></div>
       <div class="res-card"><div class="res-label">Freund:innen-Score</div><div class="res-val" id="score-f">0 <span class="res-max">/ 10</span></div></div>
     </div>
     <div class="verdict" id="verdict">
@@ -620,10 +624,10 @@
   }
 
   function update() {
-    document.getElementById('cnt-b').textContent = counts.b + ' / 3';
+    document.getElementById('cnt-b').textContent = counts.b + ' / 4';
     document.getElementById('cnt-f').textContent = counts.f + ' / 10';
     document.getElementById('cnt-r').textContent = counts.r + ' / 8';
-    document.getElementById('score-b').innerHTML = scores.b + ' <span class="res-max">/ 3</span>';
+    document.getElementById('score-b').innerHTML = scores.b + ' <span class="res-max">/ 4</span>';
     document.getElementById('score-f').innerHTML = scores.f + ' <span class="res-max">/ 10</span>';
 
     var db    = document.querySelectorAll('#items-r .item.checked .dealbreaker').length;
@@ -644,7 +648,7 @@
       // Ganz frisch: ab 3 Punkten gut
       if (f >= 5)      { txt = 'Sehr vielversprechend für so früh. Weiter investieren.' + rfNote; col = '#d4a0c8'; }
       else if (f >= 3) { txt = 'Gutes Bild für den Anfang. Mehr gemeinsame Situationen schaffen.' + rfNote; col = '#6888f0'; }
-      else if (b === 3){ txt = 'Gute Basis als Bekannte. Freundschaftspotenzial noch offen — zu früh zum Einschätzen.' + rfNote; col = '#6888f0'; }
+      else if (b === 4){ txt = 'Gute Basis als Bekannte. Freundschaftspotenzial noch offen — zu früh zum Einschätzen.' + rfNote; col = '#6888f0'; }
       else if (f > 0 || b > 0) { txt = 'Erste Eindrücke. Noch zu wenig Daten — normal für dieses Stadium.' + rfNote; col = '#5c4d70'; }
       else             { txt = 'Noch keine Angaben — Checkliste oben ausfüllen.'; col = '#5c4d70'; }
     } else if (currentStage === 'learning') {
@@ -652,7 +656,7 @@
       if (f >= 8)      { txt = 'Sehr starkes Bild. Klares Freundschaftspotenzial, Investition lohnt sich sehr.' + rfNote; col = '#d4a0c8'; }
       else if (f >= 5) { txt = 'Solides Bild für dieses Stadium. Freundschaftspotenzial ist vorhanden.' + rfNote; col = '#d4a0c8'; }
       else if (f >= 3) { txt = 'Noch nicht ausreichend für dieses Stadium. Mehr Situationen beobachten.' + rfNote; col = '#c89050'; }
-      else if (b === 3){ txt = 'Gute Bekannte, Freundschaftspotenzial noch unklar. Mehr Tiefe schaffen.' + rfNote; col = '#6888f0'; }
+      else if (b === 4){ txt = 'Gute Bekannte, Freundschaftspotenzial noch unklar. Mehr Tiefe schaffen.' + rfNote; col = '#6888f0'; }
       else             { txt = 'Wenig Resonanz bisher. Mehr Situationen schaffen oder neu einschätzen.' + rfNote; col = '#5c4d70'; }
     } else {
       // Bestehender Kontakt: ab 8 Punkten gut
