@@ -660,34 +660,108 @@
     var nonDb = document.querySelectorAll('#items-r .item.checked').length - db - dbf;
     var b = scores.b, f = scores.f, v = document.getElementById('verdict');
     var txt = '', col = '#e8dff5';
-    var rfNote = nonDb === 1 ? ' (Eine Red Flag ist aktiv — ansprechbar, kein Ausschluss.)' : '';
 
-    // Red Flags haben immer Vorrang
+    // ── GATES ──────────────────────────────────────────────────────────────
     if (db >= 1) {
-      txt = 'Dealbreaker aktiv. Kein Aufwand, unabhängig davon, wie viel sonst stimmt.'; col = '#e88080';
-    } else if (nonDb >= 3) {
-      txt = 'Drei oder mehr Red Flags — entspricht in der Summe einem Dealbreaker. Aufwand ist hier nicht sinnvoll.'; col = '#e88080';
-    } else if (nonDb === 2) {
-      txt = 'Zwei Red Flags: kritisch. Ich beobachte genau, ob sich das ändert, und setze eine klare Grenze.'; col = '#c89050';
-    } else if (currentStage === 'fresh') {
-      // Ganz frisch: ab 3 Punkten gut
-      if (f >= 5)      { txt = 'Sehr vielversprechend für so früh. Weiter investieren.' + rfNote; col = '#d4a0c8'; }
-      else if (f >= 3) { txt = 'Gutes Bild für den Anfang. Mehr gemeinsame Situationen schaffen.' + rfNote; col = '#6888f0'; }
-      else if (b === 4){ txt = 'Gute Basis als Bekannte. Freundschaftspotenzial noch offen — zu früh zum Einschätzen.' + rfNote; col = '#6888f0'; }
-      else if (f > 0 || b > 0) { txt = 'Erste Eindrücke. Noch zu wenig Daten — normal für dieses Stadium.' + rfNote; col = '#5c4d70'; }
-      else             { txt = 'Noch keine Angaben — Checkliste oben ausfüllen.'; col = '#5c4d70'; }
+      txt = 'Dealbreaker aktiv. Kein Aufwand, unabhängig davon, wie viel sonst stimmt.';
+      col = '#e88080';
+      v.innerHTML = '<div class="verdict-label">Einschätzung</div><span style="color:' + col + '">' + txt + '</span>';
+      return;
+    }
+    if (nonDb >= 3) {
+      txt = 'Drei oder mehr Red Flags — entspricht einem Dealbreaker. Kein Aufwand.';
+      col = '#e88080';
+      v.innerHTML = '<div class="verdict-label">Einschätzung</div><span style="color:' + col + '">' + txt + '</span>';
+      return;
+    }
+
+    // ── FLAG MODIFIERS ──────────────────────────────────────────────────────
+    // 2 flags: positive verdict gets dampened and flags become explicit condition
+    // 1 flag:  appended note, doesn't change verdict level
+    var twoFlags = nonDb === 2;
+    var oneFlag  = nonDb === 1;
+    var flagSuffix = oneFlag ? ' (Eine Red Flag — ansprechbar, kein Ausschluss.)' : '';
+
+    // ── HELPERS ─────────────────────────────────────────────────────────────
+    // b===4: Fundament vollständig; b>=3: gut; b>=2: in Ordnung; b<=1: unklar
+    var bFull   = b === 4;
+    var bGood   = b >= 3;
+    var bWeak   = b <= 1;
+
+    // ── FRESH ───────────────────────────────────────────────────────────────
+    // f/13: ≥6 sehr vielversprechend, ≥4 gut, <4 zu wenig
+    if (currentStage === 'fresh') {
+      if (twoFlags) {
+        if (bFull && f >= 6) { txt = 'Grundsätzlich vielversprechend auf beiden Ebenen — aber zwei Red Flags. Erst adressieren, dann investieren.'; col = '#c89050'; }
+        else if (f >= 4)     { txt = 'Erste gute Signale — aber zwei Red Flags trüben das Bild. Erst beobachten.'; col = '#c89050'; }
+        else                 { txt = 'Zu wenig Daten und dazu zwei Red Flags. Abwarten.'; col = '#c89050'; }
+      } else {
+        // Synergie: starkes b UND starkes f
+        if (bFull && f >= 6) { txt = 'Sehr vielversprechend auf beiden Ebenen — gute Basis und erste starke Freundschaftssignale. Für dieses Stadium schon viel.' + flagSuffix; col = '#d4a0c8'; }
+        // f stark, b variabel
+        else if (f >= 6)     { txt = 'Sehr vielversprechend für so früh.' + (bWeak ? ' Fundament noch aufbauen.' : '') + flagSuffix; col = '#d4a0c8'; }
+        // Synergie: gutes b UND erste f-Signale
+        else if (bFull && f >= 4) { txt = 'Gute Basis und erste Freundschaftssignale — für dieses Stadium bereits viel.' + flagSuffix; col = '#6888f0'; }
+        // f okay
+        else if (f >= 4)     { txt = 'Erste Freundschaftssignale — gut für dieses Stadium. Weiter beobachten.' + flagSuffix; col = '#6888f0'; }
+        // Nur b
+        else if (bFull)      { txt = 'Starkes Bekannte-Fundament. Freundschaftspotenzial noch offen — mehr gemeinsame Situationen schaffen.' + flagSuffix; col = '#6888f0'; }
+        // Wenig von beidem
+        else if (b > 0 || f > 0) { txt = 'Erste Eindrücke. Noch zu wenig Daten — normal für dieses Stadium.' + flagSuffix; col = '#5c4d70'; }
+        else                 { txt = 'Noch keine Angaben — Checkliste oben ausfüllen.'; col = '#5c4d70'; }
+      }
+
+    // ── LEARNING ────────────────────────────────────────────────────────────
+    // f/13: ≥9 stark, ≥6 solide, ≥4 noch knapp, <4 wenig
     } else if (currentStage === 'learning') {
-      // Gerade am Kennenlernen: ab 5 Punkten gut
-      if (f >= 8)      { txt = 'Sehr starkes Bild. Klares Freundschaftspotenzial, Investition lohnt sich sehr.' + rfNote; col = '#d4a0c8'; }
-      else if (f >= 5) { txt = 'Solides Bild für dieses Stadium. Freundschaftspotenzial ist vorhanden.' + rfNote; col = '#d4a0c8'; }
-      else if (f >= 3) { txt = 'Noch nicht ausreichend für dieses Stadium. Mehr Situationen beobachten.' + rfNote; col = '#c89050'; }
-      else if (b === 4){ txt = 'Gute Bekannte, Freundschaftspotenzial noch unklar. Mehr Tiefe schaffen.' + rfNote; col = '#6888f0'; }
-      else             { txt = 'Wenig Resonanz bisher. Mehr Situationen schaffen oder neu einschätzen.' + rfNote; col = '#5c4d70'; }
+      if (twoFlags) {
+        if (bFull && f >= 9) { txt = 'Beides stark — aber zwei Red Flags sind ein echtes Hindernis. Erst adressieren, dann entscheiden.'; col = '#c89050'; }
+        else if (f >= 6)     { txt = 'Freundschaftspotenzial erkennbar — zwei Red Flags müssen aber zuerst geklärt werden.'; col = '#c89050'; }
+        else                 { txt = 'Zu wenig Potenzial und dazu Red Flags. Aufwand nicht sinnvoll.'; col = '#e88080'; }
+      } else {
+        // Synergie: volles Fundament + starkes f
+        if (bFull && f >= 9) { txt = 'Hervorragend auf beiden Ebenen — Fundament sitzt, starkes Freundschaftspotenzial. Investition lohnt sich sehr.' + flagSuffix; col = '#d4a0c8'; }
+        // Synergie: volles Fundament + solides f
+        else if (bFull && f >= 6) { txt = 'Stark auf beiden Ebenen — Basis ist da, Freundschaftspotenzial klar erkennbar. Weiter investieren.' + flagSuffix; col = '#d4a0c8'; }
+        // Starkes f, Fundament variabel
+        else if (f >= 9)     { txt = 'Starkes Freundschaftspotenzial.' + (bWeak ? ' Fundament noch ausbaufähig — das verdient Aufmerksamkeit.' : '') + flagSuffix; col = '#d4a0c8'; }
+        // Solides f, Fundament variabel
+        else if (f >= 6)     { txt = 'Solides Freundschaftspotenzial.' + (bWeak ? ' Fundament noch nicht vollständig da.' : '') + ' Weiter investieren.' + flagSuffix; col = '#d4a0c8'; }
+        // Synergie: gutes Fundament + erste f-Signale
+        else if (bFull && f >= 4) { txt = 'Gute Bekannte mit ersten Freundschaftssignalen — noch mehr Tiefe schaffen.' + flagSuffix; col = '#6888f0'; }
+        // Schwaches f, okay b
+        else if (f >= 4)     { txt = 'Noch nicht ausreichend für dieses Stadium. Mehr Situationen schaffen oder neu einschätzen.' + flagSuffix; col = '#c89050'; }
+        // Nur b
+        else if (bFull)      { txt = 'Gute Bekannte — Freundschaftspotenzial bisher nicht erkennbar. Gezielt mehr Tiefe riskieren.' + flagSuffix; col = '#6888f0'; }
+        else                 { txt = 'Wenig Resonanz bisher. Mehr Situationen schaffen oder akzeptieren, dass hier wenig ist.' + flagSuffix; col = '#5c4d70'; }
+      }
+
+    // ── EXISTING ─────────────────────────────────────────────────────────────
+    // f/13: ≥11 außergewöhnlich, ≥9 gut, ≥6 mittelmäßig, <6 wenig
     } else {
-      // Bestehender Kontakt: ab 8 Punkten gut
-      if (f >= 8)      { txt = 'Klares Ja. Diese Verbindung lohnt sich.' + rfNote; col = '#d4a0c8'; }
-      else if (f >= 5) { txt = 'Mittelmäßig für jemanden, den ich schon kenne. Bewusst halten oder aktiv vertiefen.' + rfNote; col = '#c89050'; }
-      else             { txt = 'Auffällig wenig Resonanz für einen bestehenden Kontakt. Lohnt sich, das zu überdenken.' + rfNote; col = '#e88080'; }
+      if (twoFlags) {
+        if (bFull && f >= 9) { txt = 'Verbindung wäre stark — aber bei bestehendem Kontakt sind zwei Red Flags ein klares Signal. Adressieren.'; col = '#c89050'; }
+        else if (f >= 6)     { txt = 'Mittelmäßiges Potenzial plus Red Flags — klarer Klärungsbedarf.'; col = '#c89050'; }
+        else                 { txt = 'Wenig Potenzial und Red Flags. Aufwand überdenken.'; col = '#e88080'; }
+      } else {
+        // Synergie: volles Fundament + außergewöhnliches f
+        if (bFull && f >= 11) { txt = 'Außergewöhnlich — starke Basis, tiefes Freundschaftspotenzial auf beiden Ebenen. Selten und wertvoll.' + flagSuffix; col = '#d4a0c8'; }
+        // Synergie: volles Fundament + gutes f
+        else if (bFull && f >= 9) { txt = 'Klares Ja auf beiden Ebenen. Diese Verbindung lohnt sich sehr.' + flagSuffix; col = '#d4a0c8'; }
+        // Sehr starkes f, Fundament fehlt
+        else if (f >= 11)    { txt = 'Sehr starkes Freundschaftspotenzial.' + (bWeak ? ' Fundament fehlt aber noch — das ist ein Ungleichgewicht, das Aufmerksamkeit verdient.' : '') + flagSuffix; col = bWeak ? '#c89050' : '#d4a0c8'; }
+        // Gutes f, Fundament variabel
+        else if (f >= 9)     { txt = 'Gutes Freundschaftspotenzial.' + (bWeak ? ' Fundament noch nicht vollständig — lohnt sich zu adressieren.' : ' Investition lohnt sich.') + flagSuffix; col = '#d4a0c8'; }
+        // Synergie: starkes Fundament + mittelmäßiges f
+        else if (bFull && f >= 6) { txt = 'Als Bekannte sehr gut. Freundschaftspotenzial vorhanden, aber nicht das stärkste Bild.' + flagSuffix; col = '#6888f0'; }
+        // Mittelmäßiges f
+        else if (f >= 6)     { txt = 'Mittelmäßig für jemanden, den ich schon kenne. Bewusst auf Bekannte-Ebene halten oder aktiv vertiefen.' + flagSuffix; col = '#c89050'; }
+        // Nur Fundament
+        else if (bFull)      { txt = 'Als Bekannte gut. Freundschaftspotenzial ist bisher nicht da — ist das so in Ordnung?' + flagSuffix; col = '#6888f0'; }
+        // Wenig von beidem
+        else if (bGood)      { txt = 'Wenig Resonanz auf Freundschaftsebene für jemanden, den ich schon kenne. Überdenken.' + flagSuffix; col = '#e88080'; }
+        else                 { txt = 'Wenig Resonanz auf beiden Ebenen für einen bestehenden Kontakt. Lohnt sich, das ehrlich zu bewerten.' + flagSuffix; col = '#e88080'; }
+      }
     }
 
     v.innerHTML = '<div class="verdict-label">Einschätzung</div><span style="color:' + col + '">' + txt + '</span>';
