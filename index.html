@@ -131,6 +131,20 @@
   .dealbreaker-f { font-size: 10px; font-weight: 600; color: #d4a0c8; background: #180e22; border: 1px solid #2e1840; padding: 1px 7px; border-radius: 10px; margin-left: 6px; vertical-align: middle; }
   .weighted      { font-size: 10px; font-weight: 600; color: #d4a0c8; background: #180e22; border: 1px solid #2e1840; padding: 1px 7px; border-radius: 10px; margin-left: 6px; vertical-align: middle; }
 
+  /* STAGE SELECTOR */
+  .stage-wrap {
+    display: flex; gap: 5px; margin-bottom: 2rem;
+    background: #0d0a18; border: 1px solid #1e1530;
+    border-radius: 12px; padding: 5px;
+  }
+  .stage-btn {
+    flex: 1; padding: 9px 12px; border: none; border-radius: 8px;
+    background: transparent; color: #5c4d70; font-size: 12.5px;
+    cursor: pointer; transition: all 0.18s; font-family: inherit; line-height: 1.3; text-align: center;
+  }
+  .stage-btn:hover { color: #9888b8; }
+  .stage-btn.active { background: #1a1430; color: #ede8d8; }
+
   /* RESULT */
   .result-area { background: #0d0a18; border: 1px solid #1e1530; border-radius: 14px; padding: 18px 20px; margin-bottom: 20px; }
   .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
@@ -157,6 +171,13 @@
 
   <div class="header">
     <h1>Checkliste: Lohnt sich sozialer Aufwand?</h1>
+  </div>
+
+  <div class="sec-label">Kontaktstadium</div>
+  <div class="stage-wrap">
+    <button class="stage-btn active" data-stage="fresh"    onclick="setStage(this)">Ganz frisch</button>
+    <button class="stage-btn"        data-stage="learning" onclick="setStage(this)">Gerade am Kennenlernen</button>
+    <button class="stage-btn"        data-stage="existing" onclick="setStage(this)">Bestehender Kontakt</button>
   </div>
 
   <!-- KONTAKTMODUS -->
@@ -483,6 +504,14 @@
   // Checklist logic
   var scores = { b: 0, f: 0, r: 0, x: 0 };
   var counts = { b: 0, f: 0, r: 0, x: 0 };
+  var currentStage = 'fresh';
+
+  function setStage(btn) {
+    document.querySelectorAll('.stage-btn').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    currentStage = btn.dataset.stage;
+    update();
+  }
 
   function toggle(el) {
     var cat = el.dataset.cat, val = parseInt(el.dataset.val);
@@ -498,36 +527,39 @@
     document.getElementById('score-b').innerHTML = scores.b + ' <span class="res-max">/ 3</span>';
     document.getElementById('score-f').innerHTML = scores.f + ' <span class="res-max">/ 10</span>';
 
-    var db = document.querySelectorAll('#items-r .item.checked .dealbreaker').length;
-    var dbf = document.querySelectorAll('#items-r .item.checked .dealbreaker-f').length;
+    var db    = document.querySelectorAll('#items-r .item.checked .dealbreaker').length;
+    var dbf   = document.querySelectorAll('#items-r .item.checked .dealbreaker-f').length;
     var nonDb = document.querySelectorAll('#items-r .item.checked').length - db - dbf;
     var b = scores.b, f = scores.f, v = document.getElementById('verdict');
-    var combined = b + f;
     var txt = '', col = '#e8dff5';
-    var rfNote = nonDb === 1 ? ' (Eine Red Flag ist aktiv, ansprechbar, kein Ausschluss.)' : '';
+    var rfNote = nonDb === 1 ? ' (Eine Red Flag ist aktiv — ansprechbar, kein Ausschluss.)' : '';
 
+    // Red Flags haben immer Vorrang
     if (db >= 1) {
       txt = 'Dealbreaker aktiv. Kein Aufwand, unabhängig davon, wie viel sonst stimmt.'; col = '#e88080';
     } else if (nonDb >= 3) {
-      txt = 'Drei oder mehr Red Flags: das entspricht in der Summe einem Dealbreaker. Aufwand ist hier nicht sinnvoll.'; col = '#e88080';
+      txt = 'Drei oder mehr Red Flags — entspricht in der Summe einem Dealbreaker. Aufwand ist hier nicht sinnvoll.'; col = '#e88080';
     } else if (nonDb === 2) {
       txt = 'Zwei Red Flags: kritisch. Ich beobachte genau, ob sich das ändert, und setze eine klare Grenze.'; col = '#c89050';
-    } else if (combined < 4) {
-      if (b === 3) { txt = 'Bekannte-Seite vollständig bewertet — sehr gutes Bild. Freundschaftspotenzial noch nicht einschätzbar, mehr gemeinsame Situationen schaffen.' + rfNote; col = '#6888f0'; }
-      else { txt = 'Zu wenig Daten oder zu wenig Potenzial. Mehr Situationen beobachten, oder akzeptieren, dass hier nichts zu holen ist.' + rfNote; col = '#5c4d70'; }
-    } else if (combined >= 10) {
-      if (f >= 8) { txt = 'Super, auf beiden Ebenen. Freundschaftspotenzial ist klar, auch als Bekannte sehr gut. Investition lohnt sich sehr.' + rfNote; col = '#d4a0c8'; }
-      else { txt = 'Starkes Gesamtbild. Sehr interessantes Freundschaftspotenzial, solide Basis als Bekannte.' + rfNote; col = '#d4a0c8'; }
-    } else if (combined >= 7) {
-      if (f >= 7) { txt = 'Gutes Gesamtbild. Klares Freundschaftspotenzial, lohnt sich weiter zu investieren.' + rfNote; col = '#d4a0c8'; }
-      else if (f >= 4) { txt = 'Gutes Gesamtbild. Freundschaftspotenzial ist vorhanden, noch mehr Situationen beobachten.' + rfNote; col = '#d4a0c8'; }
-      else if (b === 3) { txt = 'Sehr gute Bekannte. Als Freund:in noch zu wenig Daten. Mehr Zeit miteinander.' + rfNote; col = '#6888f0'; }
-      else { txt = 'Gutes Gesamtbild, noch kein klares Profil. Weiter beobachten.' + rfNote; col = '#5c4d70'; }
+    } else if (currentStage === 'fresh') {
+      // Ganz frisch: ab 3 Punkten gut
+      if (f >= 5)      { txt = 'Sehr vielversprechend für so früh. Weiter investieren.' + rfNote; col = '#d4a0c8'; }
+      else if (f >= 3) { txt = 'Gutes Bild für den Anfang. Mehr gemeinsame Situationen schaffen.' + rfNote; col = '#6888f0'; }
+      else if (b === 3){ txt = 'Gute Basis als Bekannte. Freundschaftspotenzial noch offen — zu früh zum Einschätzen.' + rfNote; col = '#6888f0'; }
+      else if (f > 0 || b > 0) { txt = 'Erste Eindrücke. Noch zu wenig Daten — normal für dieses Stadium.' + rfNote; col = '#5c4d70'; }
+      else             { txt = 'Noch keine Angaben — Checkliste oben ausfüllen.'; col = '#5c4d70'; }
+    } else if (currentStage === 'learning') {
+      // Gerade am Kennenlernen: ab 5 Punkten gut
+      if (f >= 8)      { txt = 'Sehr starkes Bild. Klares Freundschaftspotenzial, Investition lohnt sich sehr.' + rfNote; col = '#d4a0c8'; }
+      else if (f >= 5) { txt = 'Solides Bild für dieses Stadium. Freundschaftspotenzial ist vorhanden.' + rfNote; col = '#d4a0c8'; }
+      else if (f >= 3) { txt = 'Noch nicht ausreichend für dieses Stadium. Mehr Situationen beobachten.' + rfNote; col = '#c89050'; }
+      else if (b === 3){ txt = 'Gute Bekannte, Freundschaftspotenzial noch unklar. Mehr Tiefe schaffen.' + rfNote; col = '#6888f0'; }
+      else             { txt = 'Wenig Resonanz bisher. Mehr Situationen schaffen oder neu einschätzen.' + rfNote; col = '#5c4d70'; }
     } else {
-      if (f >= 4) { txt = 'Interessant, auf beiden Ebenen. Lohnt sich, mehr Daten zu sammeln.' + rfNote; col = '#d4a0c8'; }
-      else if (b === 3) { txt = 'Gute Bekannte. Freundschaftspotenzial noch zu wenig beobachtet — mehr gemeinsame Situationen schaffen.' + rfNote; col = '#6888f0'; }
-      else if (b >= 2) { txt = 'Interessante Bekannte. Noch zu wenig Daten für mehr. Weiter beobachten.' + rfNote; col = '#6888f0'; }
-      else { txt = 'Gerade so interessant. Mehr Daten sammeln bevor ich investiere.' + rfNote; col = '#5c4d70'; }
+      // Bestehender Kontakt: ab 8 Punkten gut
+      if (f >= 8)      { txt = 'Klares Ja. Diese Verbindung lohnt sich.' + rfNote; col = '#d4a0c8'; }
+      else if (f >= 5) { txt = 'Mittelmäßig für jemanden, den ich schon kenne. Bewusst halten oder aktiv vertiefen.' + rfNote; col = '#c89050'; }
+      else             { txt = 'Auffällig wenig Resonanz für einen bestehenden Kontakt. Lohnt sich, das zu überdenken.' + rfNote; col = '#e88080'; }
     }
 
     v.innerHTML = '<div class="verdict-label">Einschätzung</div><span style="color:' + col + '">' + txt + '</span>';
