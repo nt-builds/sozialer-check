@@ -192,7 +192,7 @@
     body { background: #fff !important; color: #1a1a1a !important; padding: 0; font-size: 12px; }
     .page { max-width: 100%; }
 
-    .stage-wrap, .reset-btn, .print-btn { display: none !important; }
+    .stage-wrap, .reset-btn, .print-btn, .no-print { display: none !important; }
 
     .header { border-color: #ddd; margin-bottom: 1rem; padding-bottom: 0.75rem; }
     .header h1 { color: #1a1a1a !important; font-size: 18px; }
@@ -271,7 +271,7 @@
     <input type="text" id="person-name" class="name-input" placeholder="Name (optional)" autocomplete="off" />
   </div>
 
-  <div class="sec-label">Kontaktstadium</div>
+  <div class="sec-label no-print">Kontaktstadium</div>
   <div class="stage-wrap">
     <button class="stage-btn active" data-stage="fresh"    onclick="setStage(this)">Ganz frisch</button>
     <button class="stage-btn"        data-stage="learning" onclick="setStage(this)">Gerade am Kennenlernen</button>
@@ -279,8 +279,8 @@
   </div>
 
   <!-- KONTAKTMODUS -->
-  <div class="sec-label">Kontaktmodus-Kompass: was ich wann brauche</div>
-  <div class="mode-card">
+  <div class="sec-label no-print">Kontaktmodus-Kompass: was ich wann brauche</div>
+  <div class="mode-card no-print">
     <div class="mode-card-head">
       <h3>Wie ich Kontakt am liebsten gestalte</h3>
     </div>
@@ -438,8 +438,8 @@
     <button class="print-btn" onclick="window.print()">Als PDF speichern ↓</button>
   </div>
 
-  <div class="sec-label" style="margin-top: 2.5rem;">Offenheit oder Abladen? Eine Unterscheidungshilfe</div>
-  <div class="grid">
+  <div class="sec-label no-print" style="margin-top: 2.5rem;">Offenheit oder Abladen? Eine Unterscheidungshilfe</div>
+  <div class="grid no-print">
     <div class="card">
       <div class="card-head">
         <div><h3>Zeichen von Offenheit</h3></div>
