@@ -723,10 +723,10 @@
         if (bFull && f >= 9) { txt = 'Hervorragend auf beiden Ebenen — Fundament sitzt, starkes Freundschaftspotenzial. Investition lohnt sich sehr.' + flagSuffix; col = '#d4a0c8'; }
         // Synergie: volles Fundament + solides f
         else if (bFull && f >= 6) { txt = 'Stark auf beiden Ebenen — Basis ist da, Freundschaftspotenzial klar erkennbar. Weiter investieren.' + flagSuffix; col = '#d4a0c8'; }
-        // Starkes f, Fundament variabel
-        else if (f >= 9)     { txt = 'Starkes Freundschaftspotenzial.' + (bWeak ? ' Fundament noch ausbaufähig — das verdient Aufmerksamkeit.' : '') + flagSuffix; col = '#d4a0c8'; }
-        // Solides f, Fundament variabel
-        else if (f >= 6)     { txt = 'Solides Freundschaftspotenzial.' + (bWeak ? ' Fundament noch nicht vollständig da.' : '') + ' Weiter investieren.' + flagSuffix; col = '#d4a0c8'; }
+        // Starkes f
+        else if (f >= 9)     { txt = 'Starkes Freundschaftspotenzial. Investition lohnt sich.' + flagSuffix; col = '#d4a0c8'; }
+        // Solides f
+        else if (f >= 6)     { txt = 'Solides Freundschaftspotenzial. Weiter investieren.' + flagSuffix; col = '#d4a0c8'; }
         // Synergie: gutes Fundament + erste f-Signale
         else if (bFull && f >= 4) { txt = 'Gute Bekannte mit ersten Freundschaftssignalen — noch mehr Tiefe schaffen.' + flagSuffix; col = '#6888f0'; }
         // Schwaches f, okay b
@@ -748,10 +748,10 @@
         if (bFull && f >= 11) { txt = 'Außergewöhnlich — starke Basis, tiefes Freundschaftspotenzial auf beiden Ebenen. Selten und wertvoll.' + flagSuffix; col = '#d4a0c8'; }
         // Synergie: volles Fundament + gutes f
         else if (bFull && f >= 9) { txt = 'Klares Ja auf beiden Ebenen. Diese Verbindung lohnt sich sehr.' + flagSuffix; col = '#d4a0c8'; }
-        // Sehr starkes f, Fundament fehlt
-        else if (f >= 11)    { txt = 'Sehr starkes Freundschaftspotenzial.' + (bWeak ? ' Fundament fehlt aber noch — das ist ein Ungleichgewicht, das Aufmerksamkeit verdient.' : '') + flagSuffix; col = bWeak ? '#c89050' : '#d4a0c8'; }
-        // Gutes f, Fundament variabel
-        else if (f >= 9)     { txt = 'Gutes Freundschaftspotenzial.' + (bWeak ? ' Fundament noch nicht vollständig — lohnt sich zu adressieren.' : ' Investition lohnt sich.') + flagSuffix; col = '#d4a0c8'; }
+        // Sehr starkes f
+        else if (f >= 11)    { txt = 'Sehr starkes Freundschaftspotenzial auf allen Ebenen. Selten und wertvoll.' + flagSuffix; col = '#d4a0c8'; }
+        // Gutes f
+        else if (f >= 9)     { txt = 'Gutes Freundschaftspotenzial. Investition lohnt sich.' + flagSuffix; col = '#d4a0c8'; }
         // Synergie: starkes Fundament + mittelmäßiges f
         else if (bFull && f >= 6) { txt = 'Als Bekannte sehr gut. Freundschaftspotenzial vorhanden, aber nicht das stärkste Bild.' + flagSuffix; col = '#6888f0'; }
         // Mittelmäßiges f
