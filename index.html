@@ -350,12 +350,16 @@
     <div class="card card-f">
       <div class="card-head">
         <div><h3>Potenzielle Freund:innen</h3></div>
-        <span class="counter cnt-f" id="cnt-f">0 / 13</span>
+        <span class="counter cnt-f" id="cnt-f">0 / 14</span>
       </div>
       <div id="items-f">
         <div class="item" data-cat="f" data-val="1" onclick="toggle(this)">
           <div class="cb cb-f"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          <div><div class="item-text">Epistemische Bescheidenheit</div><div class="item-note">Trennt Meinung von Fakt, kennt die Grenzen des eigenen Wissens. Kann Komplexität und Ambiguität der meisten wichtigen Themen des Lebens erkennen, anerkennen und aushalten.</div></div>
+          <div><div class="item-text">Epistemische Bescheidenheit</div><div class="item-note">Trennt Meinung von Fakt, kennt die Grenzen des eigenen Wissens. Behauptet keine Gewissheit, wo keine ist.</div></div>
+        </div>
+        <div class="item" data-cat="f" data-val="1" onclick="toggle(this)">
+          <div class="cb cb-f"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div><div class="item-text">Hält Ungewissheit und Ambiguität aus</div><div class="item-note">Erkennt, anerkennt und hält aus, dass wichtige Dinge oft widersprüchlich, offen oder uneindeutig sind. Braucht keine Auflösung — auch wenn es unbequem ist.</div></div>
         </div>
         <div class="item" data-cat="f" data-val="1" onclick="toggle(this)">
           <div class="cb cb-f"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
@@ -453,7 +457,7 @@
   <div class="result-area">
     <div class="result-grid">
       <div class="res-card"><div class="res-label">Bekannte-Score</div><div class="res-val" id="score-b">0 <span class="res-max">/ 4</span></div></div>
-      <div class="res-card"><div class="res-label">Freund:innen-Score</div><div class="res-val" id="score-f">0 <span class="res-max">/ 13</span></div></div>
+      <div class="res-card"><div class="res-label">Freund:innen-Score</div><div class="res-val" id="score-f">0 <span class="res-max">/ 14</span></div></div>
     </div>
     <div class="verdict" id="verdict">
       <div class="verdict-label">Einschätzung</div>
@@ -579,7 +583,7 @@
       for (var arm = 0; arm < 2; arm++) {
         var aOff = arm * Math.PI;
         for (var n = 1; n < 1100; n++) {
-          var t  = n / 1300;
+          var t  = n / 1400;
           var th = t * Math.PI * 3.8 + aOff;
           var rv = Math.pow(t, 0.65) * scale * 0.54;
           var sc = (rG() - 0.5) * rv * 0.30;
@@ -650,10 +654,10 @@
 
   function update() {
     document.getElementById('cnt-b').textContent = counts.b + ' / 4';
-    document.getElementById('cnt-f').textContent = counts.f + ' / 13';
+    document.getElementById('cnt-f').textContent = counts.f + ' / 14';
     document.getElementById('cnt-r').textContent = counts.r + ' / 8';
     document.getElementById('score-b').innerHTML = scores.b + ' <span class="res-max">/ 4</span>';
-    document.getElementById('score-f').innerHTML = scores.f + ' <span class="res-max">/ 13</span>';
+    document.getElementById('score-f').innerHTML = scores.f + ' <span class="res-max">/ 14</span>';
 
     var db    = document.querySelectorAll('#items-r .item.checked .dealbreaker').length;
     var dbf   = document.querySelectorAll('#items-r .item.checked .dealbreaker-f').length;
@@ -724,15 +728,15 @@
       }
 
     // ── EXISTING ─────────────────────────────────────────────────────────────
-    // f/13: ≥11 außergewöhnlich, ≥9 gut, ≥6 mittelmäßig, <6 wenig
+    // f/14: ≥12 außergewöhnlich, ≥9 gut, ≥6 mittelmäßig, <6 wenig
     } else {
       if (twoFlags) {
         if (f >= 9)          { txt = 'Verbindung wäre stark — aber zwei Red Flags sind bei bestehendem Kontakt ein klares Signal. Erst adressieren.'; col = '#c89050'; }
         else if (f >= 6)     { txt = 'Potenzial vorhanden, aber zwei Red Flags müssen zuerst geklärt werden.'; col = '#c89050'; }
         else                 { txt = 'Wenig Potenzial und Red Flags. Aufwand überdenken.'; col = '#e88080'; }
       } else {
-        if (f >= 11 && bFull) { txt = 'Außergewöhnlich auf allen Ebenen — tiefes Freundschaftspotenzial und starke Basis. Selten und wertvoll.' + flagSuffix; col = '#d4a0c8'; }
-        else if (f >= 11)    { txt = 'Außergewöhnlich starkes Freundschaftspotenzial. Klares Ja.' + flagSuffix; col = '#d4a0c8'; }
+        if (f >= 12 && bFull) { txt = 'Außergewöhnlich auf allen Ebenen — tiefes Freundschaftspotenzial und starke Basis. Selten und wertvoll.' + flagSuffix; col = '#d4a0c8'; }
+        else if (f >= 12)    { txt = 'Außergewöhnlich starkes Freundschaftspotenzial. Klares Ja.' + flagSuffix; col = '#d4a0c8'; }
         else if (f >= 9 && bFull) { txt = 'Klares Ja auf beiden Ebenen. Diese Verbindung lohnt sich sehr.' + flagSuffix; col = '#d4a0c8'; }
         else if (f >= 9)     { txt = 'Klares Ja. Diese Verbindung lohnt sich sehr.' + flagSuffix; col = '#d4a0c8'; }
         else if (f >= 6 && bFull) { txt = 'Als Bekannte sehr gut. Freundschaftspotenzial vorhanden, aber nicht das stärkste Bild.' + flagSuffix; col = '#6888f0'; }
