@@ -350,7 +350,7 @@
     <div class="card card-f">
       <div class="card-head">
         <div><h3>Potenzielle Freund:innen</h3></div>
-        <span class="counter cnt-f" id="cnt-f">0 / 14</span>
+        <span class="counter cnt-f" id="cnt-f">0 / 16</span>
       </div>
       <div id="items-f">
         <div class="item" data-cat="f" data-val="1" onclick="toggle(this)">
@@ -379,7 +379,15 @@
         </div>
         <div class="item" data-cat="f" data-val="1" onclick="toggle(this)">
           <div class="cb cb-f"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          <div><div class="item-text">Wir reden offen</div><div class="item-note">Innere Wahrheit interessiert uns beide 1000 mal mehr als Fassade.</div></div>
+          <div><div class="item-text">Redet offen</div><div class="item-note">Hält nichts zurück, was relevant wäre. Performt nicht, glättet nicht. Spricht aus, was ist — auch wenn es unbequem ist.</div></div>
+        </div>
+        <div class="item" data-cat="f" data-val="1" onclick="toggle(this)">
+          <div class="cb cb-f"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div><div class="item-text">Ich fühle mich sicher, offen zu reden</div><div class="item-note">Ich kann direkt sein, unfertig denken, unbequeme Dinge sagen — ohne dass ich dafür bezahle. Keine Selbstzensur, kein Eggshell-Gehen.</div></div>
+        </div>
+        <div class="item" data-cat="f" data-val="1" onclick="toggle(this)">
+          <div class="cb cb-f"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div><div class="item-text">Wahrheit interessiert uns beide mehr als Fassade</div><div class="item-note">Wir wollen beide wirklich wissen, wie es ist. Nicht schönen, nicht glätten. Die innere Wahrheit zählt mehr als das, was gut aussieht.</div></div>
         </div>
         <div class="item" data-cat="f" data-val="1" onclick="toggle(this)">
           <div class="cb cb-f"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
@@ -457,7 +465,7 @@
   <div class="result-area">
     <div class="result-grid">
       <div class="res-card"><div class="res-label">Bekannte-Score</div><div class="res-val" id="score-b">0 <span class="res-max">/ 4</span></div></div>
-      <div class="res-card"><div class="res-label">Freund:innen-Score</div><div class="res-val" id="score-f">0 <span class="res-max">/ 14</span></div></div>
+      <div class="res-card"><div class="res-label">Freund:innen-Score</div><div class="res-val" id="score-f">0 <span class="res-max">/ 16</span></div></div>
     </div>
     <div class="verdict" id="verdict">
       <div class="verdict-label">Einschätzung</div>
@@ -583,7 +591,7 @@
       for (var arm = 0; arm < 2; arm++) {
         var aOff = arm * Math.PI;
         for (var n = 1; n < 1100; n++) {
-          var t  = n / 1400;
+          var t  = n / 1600;
           var th = t * Math.PI * 3.8 + aOff;
           var rv = Math.pow(t, 0.65) * scale * 0.54;
           var sc = (rG() - 0.5) * rv * 0.30;
@@ -654,10 +662,10 @@
 
   function update() {
     document.getElementById('cnt-b').textContent = counts.b + ' / 4';
-    document.getElementById('cnt-f').textContent = counts.f + ' / 14';
+    document.getElementById('cnt-f').textContent = counts.f + ' / 16';
     document.getElementById('cnt-r').textContent = counts.r + ' / 8';
     document.getElementById('score-b').innerHTML = scores.b + ' <span class="res-max">/ 4</span>';
-    document.getElementById('score-f').innerHTML = scores.f + ' <span class="res-max">/ 14</span>';
+    document.getElementById('score-f').innerHTML = scores.f + ' <span class="res-max">/ 16</span>';
 
     var db    = document.querySelectorAll('#items-r .item.checked .dealbreaker').length;
     var dbf   = document.querySelectorAll('#items-r .item.checked .dealbreaker-f').length;
@@ -693,55 +701,55 @@
     var bWeak   = b <= 1;
 
     // ── FRESH ───────────────────────────────────────────────────────────────
-    // f/13: ≥6 sehr vielversprechend, ≥4 gut, <4 zu wenig
+    // f/16: ≥7 sehr vielversprechend, ≥5 gut, <5 zu wenig
     if (currentStage === 'fresh') {
       if (twoFlags) {
-        if (bFull && f >= 6) { txt = 'Grundsätzlich vielversprechend auf beiden Ebenen — aber zwei Red Flags. Erst adressieren, dann investieren.'; col = '#c89050'; }
-        else if (f >= 4)     { txt = 'Erste gute Signale — aber zwei Red Flags trüben das Bild. Erst beobachten.'; col = '#c89050'; }
+        if (bFull && f >= 7) { txt = 'Grundsätzlich vielversprechend auf beiden Ebenen — aber zwei Red Flags. Erst adressieren, dann investieren.'; col = '#c89050'; }
+        else if (f >= 5)     { txt = 'Erste gute Signale — aber zwei Red Flags trüben das Bild. Erst beobachten.'; col = '#c89050'; }
         else                 { txt = 'Zu wenig Daten und dazu zwei Red Flags. Abwarten.'; col = '#c89050'; }
       } else {
-        if (f >= 6 && bFull) { txt = 'Sehr vielversprechend auf beiden Ebenen — erste starke Freundschaftssignale und gute Basis. Für dieses Stadium schon viel.' + flagSuffix; col = '#d4a0c8'; }
-        else if (f >= 6)     { txt = 'Sehr vielversprechend für so früh. Weiter investieren.' + flagSuffix; col = '#d4a0c8'; }
-        else if (f >= 4 && bFull) { txt = 'Gute Basis und erste Freundschaftssignale — für dieses Stadium bereits viel.' + flagSuffix; col = '#6888f0'; }
-        else if (f >= 4)     { txt = 'Erste Freundschaftssignale — gut für dieses Stadium. Weiter beobachten.' + flagSuffix; col = '#6888f0'; }
+        if (f >= 7 && bFull) { txt = 'Sehr vielversprechend auf beiden Ebenen — erste starke Freundschaftssignale und gute Basis. Für dieses Stadium schon viel.' + flagSuffix; col = '#d4a0c8'; }
+        else if (f >= 7)     { txt = 'Sehr vielversprechend für so früh. Weiter investieren.' + flagSuffix; col = '#d4a0c8'; }
+        else if (f >= 5 && bFull) { txt = 'Gute Basis und erste Freundschaftssignale — für dieses Stadium bereits viel.' + flagSuffix; col = '#6888f0'; }
+        else if (f >= 5)     { txt = 'Erste Freundschaftssignale — gut für dieses Stadium. Weiter beobachten.' + flagSuffix; col = '#6888f0'; }
         else if (bFull)      { txt = 'Starke Bekannte-Basis. Freundschaftspotenzial noch offen — mehr gemeinsame Situationen schaffen.' + flagSuffix; col = '#6888f0'; }
         else if (b > 0 || f > 0) { txt = 'Erste Eindrücke. Noch zu wenig Daten — normal für dieses Stadium.' + flagSuffix; col = '#5c4d70'; }
         else                 { txt = 'Noch keine Angaben — Checkliste oben ausfüllen.'; col = '#5c4d70'; }
       }
 
     // ── LEARNING ────────────────────────────────────────────────────────────
-    // f/13: ≥9 stark, ≥6 solide, ≥4 noch knapp, <4 wenig
+    // f/16: ≥10 stark, ≥7 solide, ≥5 noch knapp, <5 wenig
     } else if (currentStage === 'learning') {
       if (twoFlags) {
-        if (bFull && f >= 9) { txt = 'Beides stark — aber zwei Red Flags sind ein echtes Hindernis. Erst adressieren, dann entscheiden.'; col = '#c89050'; }
-        else if (f >= 6)     { txt = 'Freundschaftspotenzial erkennbar — zwei Red Flags müssen aber zuerst geklärt werden.'; col = '#c89050'; }
+        if (f >= 10)         { txt = 'Beides stark — aber zwei Red Flags sind ein echtes Hindernis. Erst adressieren, dann entscheiden.'; col = '#c89050'; }
+        else if (f >= 7)     { txt = 'Freundschaftspotenzial erkennbar — zwei Red Flags müssen aber zuerst geklärt werden.'; col = '#c89050'; }
         else                 { txt = 'Zu wenig Potenzial und dazu Red Flags. Aufwand nicht sinnvoll.'; col = '#e88080'; }
       } else {
-        if (f >= 9 && bFull) { txt = 'Hervorragend auf beiden Ebenen — starkes Freundschaftspotenzial und gute Basis. Investition lohnt sich sehr.' + flagSuffix; col = '#d4a0c8'; }
-        else if (f >= 9)     { txt = 'Starkes Freundschaftspotenzial. Klares Ja — Investition lohnt sich sehr.' + flagSuffix; col = '#d4a0c8'; }
-        else if (f >= 6 && bFull) { txt = 'Stark auf beiden Ebenen — Basis ist da, Freundschaftspotenzial klar erkennbar.' + flagSuffix; col = '#d4a0c8'; }
-        else if (f >= 6)     { txt = 'Solides Freundschaftspotenzial. Weiter investieren.' + flagSuffix; col = '#d4a0c8'; }
-        else if (f >= 4 && bFull) { txt = 'Gute Bekannte mit ersten Freundschaftssignalen — mehr Tiefe schaffen.' + flagSuffix; col = '#6888f0'; }
-        else if (f >= 4)     { txt = 'Noch nicht ausreichend für dieses Stadium. Mehr Situationen schaffen oder neu einschätzen.' + flagSuffix; col = '#c89050'; }
+        if (f >= 10 && bFull){ txt = 'Hervorragend auf beiden Ebenen — starkes Freundschaftspotenzial und gute Basis. Investition lohnt sich sehr.' + flagSuffix; col = '#d4a0c8'; }
+        else if (f >= 10)    { txt = 'Starkes Freundschaftspotenzial. Klares Ja — Investition lohnt sich sehr.' + flagSuffix; col = '#d4a0c8'; }
+        else if (f >= 7 && bFull) { txt = 'Stark auf beiden Ebenen — Basis ist da, Freundschaftspotenzial klar erkennbar.' + flagSuffix; col = '#d4a0c8'; }
+        else if (f >= 7)     { txt = 'Solides Freundschaftspotenzial. Weiter investieren.' + flagSuffix; col = '#d4a0c8'; }
+        else if (f >= 5 && bFull) { txt = 'Gute Bekannte mit ersten Freundschaftssignalen — mehr Tiefe schaffen.' + flagSuffix; col = '#6888f0'; }
+        else if (f >= 5)     { txt = 'Noch nicht ausreichend für dieses Stadium. Mehr Situationen schaffen oder neu einschätzen.' + flagSuffix; col = '#c89050'; }
         else if (bFull)      { txt = 'Gute Bekannte — Freundschaftspotenzial bisher nicht erkennbar. Gezielt mehr Tiefe riskieren.' + flagSuffix; col = '#6888f0'; }
         else                 { txt = 'Wenig Resonanz bisher. Mehr Situationen schaffen oder akzeptieren, dass hier wenig ist.' + flagSuffix; col = '#5c4d70'; }
       }
 
     // ── EXISTING ─────────────────────────────────────────────────────────────
-    // f/14: ≥12 außergewöhnlich, ≥9 gut, ≥6 mittelmäßig, <6 wenig
+    // f/16: ≥14 außergewöhnlich, ≥10 gut, ≥7 mittelmäßig, <7 wenig
     } else {
       if (twoFlags) {
-        if (f >= 9)          { txt = 'Verbindung wäre stark — aber zwei Red Flags sind bei bestehendem Kontakt ein klares Signal. Erst adressieren.'; col = '#c89050'; }
-        else if (f >= 6)     { txt = 'Potenzial vorhanden, aber zwei Red Flags müssen zuerst geklärt werden.'; col = '#c89050'; }
+        if (f >= 10)         { txt = 'Verbindung wäre stark — aber zwei Red Flags sind bei bestehendem Kontakt ein klares Signal. Erst adressieren.'; col = '#c89050'; }
+        else if (f >= 7)     { txt = 'Potenzial vorhanden, aber zwei Red Flags müssen zuerst geklärt werden.'; col = '#c89050'; }
         else                 { txt = 'Wenig Potenzial und Red Flags. Aufwand überdenken.'; col = '#e88080'; }
       } else {
-        if (f >= 12 && bFull) { txt = 'Außergewöhnlich auf allen Ebenen — tiefes Freundschaftspotenzial und starke Basis. Selten und wertvoll.' + flagSuffix; col = '#d4a0c8'; }
-        else if (f >= 12)    { txt = 'Außergewöhnlich starkes Freundschaftspotenzial. Klares Ja.' + flagSuffix; col = '#d4a0c8'; }
-        else if (f >= 9 && bFull) { txt = 'Klares Ja auf beiden Ebenen. Diese Verbindung lohnt sich sehr.' + flagSuffix; col = '#d4a0c8'; }
-        else if (f >= 9)     { txt = 'Klares Ja. Diese Verbindung lohnt sich sehr.' + flagSuffix; col = '#d4a0c8'; }
-        else if (f >= 6 && bFull) { txt = 'Als Bekannte sehr gut. Freundschaftspotenzial vorhanden, aber nicht das stärkste Bild.' + flagSuffix; col = '#6888f0'; }
-        else if (f >= 6 && bGood) { txt = 'Mittelmäßig auf Freundschaftsebene — bewusst auf der Bekannte-Ebene halten, die da ist, oder aktiv vertiefen.' + flagSuffix; col = '#c89050'; }
-        else if (f >= 6)     { txt = 'Mittelmäßig auf Freundschaftsebene, wenig auf Bekannte-Ebene. Kritisch prüfen, ob Investition sinnvoll ist.' + flagSuffix; col = '#c89050'; }
+        if (f >= 14 && bFull){ txt = 'Außergewöhnlich auf allen Ebenen — tiefes Freundschaftspotenzial und starke Basis. Selten und wertvoll.' + flagSuffix; col = '#d4a0c8'; }
+        else if (f >= 14)    { txt = 'Außergewöhnlich starkes Freundschaftspotenzial. Klares Ja.' + flagSuffix; col = '#d4a0c8'; }
+        else if (f >= 10 && bFull) { txt = 'Klares Ja auf beiden Ebenen. Diese Verbindung lohnt sich sehr.' + flagSuffix; col = '#d4a0c8'; }
+        else if (f >= 10)    { txt = 'Klares Ja. Diese Verbindung lohnt sich sehr.' + flagSuffix; col = '#d4a0c8'; }
+        else if (f >= 7 && bFull) { txt = 'Als Bekannte sehr gut. Freundschaftspotenzial vorhanden, aber nicht das stärkste Bild.' + flagSuffix; col = '#6888f0'; }
+        else if (f >= 7 && bGood) { txt = 'Mittelmäßig auf Freundschaftsebene — bewusst auf der Bekannte-Ebene halten, die da ist, oder aktiv vertiefen.' + flagSuffix; col = '#c89050'; }
+        else if (f >= 7)     { txt = 'Mittelmäßig auf Freundschaftsebene, wenig auf Bekannte-Ebene. Kritisch prüfen, ob Investition sinnvoll ist.' + flagSuffix; col = '#c89050'; }
         else if (bFull)      { txt = 'Als Bekannte gut. Freundschaftspotenzial ist bisher nicht da — ist das so in Ordnung?' + flagSuffix; col = '#6888f0'; }
         else if (bGood)      { txt = 'Wenig Resonanz auf Freundschaftsebene. Ehrlich fragen, ob diese Verbindung noch Sinn macht.' + flagSuffix; col = '#e88080'; }
         else                 { txt = 'Wenig auf beiden Ebenen. Lohnt sich, ehrlich zu prüfen, ob ich hier weiter investieren möchte.' + flagSuffix; col = '#e88080'; }
