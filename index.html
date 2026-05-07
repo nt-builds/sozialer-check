@@ -236,14 +236,22 @@
     .item.checked .cb-f { background: #b070b0 !important; border-color: #b070b0 !important; box-shadow: none !important; }
     .item.checked .cb-r { background: #c06060 !important; border-color: #c06060 !important; box-shadow: none !important; }
 
-    /* Freunde + Red Flags zweispaltig → halbiert Höhe */
+    /* Freunde zweispaltig; Red Flags einspaltig (links, schmalere Spalte) */
     #items-f { column-count: 2; column-gap: 0; }
-    #items-r { column-count: 2; column-gap: 0; }
 
-    /* Grid + Abstände */
-    .grid { gap: 6px !important; margin-bottom: 6px !important; }
-    .flag-card { page-break-before: auto; }
-    .result-area { page-break-before: auto; padding: 8px 10px !important; margin-bottom: 0 !important; background: #f9f9f9 !important; }
+    /* Seiten-Grid: Bekannte + Red Flags links, Freunde rechts */
+    .page { display: grid; grid-template-columns: 5fr 7fr; column-gap: 8px; row-gap: 4px; align-items: start; }
+    .header    { grid-column: 1 / -1; }
+    .name-wrap { grid-column: 1 / -1; }
+    .sec-label { grid-column: 1 / -1; }
+    .grid      { display: contents; }          /* Kinder nehmen direkt am Grid teil */
+    .card-b    { grid-column: 1; }
+    .card-f    { grid-column: 2; grid-row: span 2; } /* überspannt Bekannte + Red Flags */
+    .flag-card { grid-column: 1; margin-bottom: 0 !important; }
+    .result-area { grid-column: 1 / -1; }
+
+    /* Ergebnis */
+    .result-area { padding: 8px 10px !important; background: #f9f9f9 !important; }
     .result-grid { gap: 6px !important; margin-bottom: 6px !important; }
     .res-card { padding: 5px 8px !important; background: #fff !important; border-color: #eee !important; }
     .res-label { color: #999 !important; font-size: 8px !important; margin-bottom: 2px !important; }
